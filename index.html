@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeQuest - Coding Awareness for College Students</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TOP NAVIGATION BAR (Visible when logged in) -->
+<header id="mainHeader" class="site-header hidden">
+    <div class="nav-container">
+        <div class="logo" onclick="showPage('homePage')">
+            <span class="logo-icon">🚀</span>
+            <div class="logo-text">
+                <h1>CodeQuest</h1>
+                <span class="logo-sub">Coding Awareness for College Students</span>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
+
+        <nav id="navLinks" class="nav-links">
+            <button class="nav-btn active" onclick="showPage('homePage')">🏠 Courses</button>
+            <button class="nav-btn" onclick="showPage('labPage')">💻 Code Lab</button>
+            <button class="nav-btn" onclick="showPage('quizPage')">📝 Quiz</button>
+            <button class="nav-btn" onclick="showPage('certificatePage')">🎓 Certificate</button>
+            <span id="navUserBadge" class="user-pill"></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </nav>
+    </div>
+</header>
+
+<main class="main-content">
+    <!-- ========================================================= -->
+    <!-- 1. INITIAL REGISTRATION & LOGIN PORTAL (FIRST PAGE)       -->
+    <!-- Simple, Classic Centered Card as it was before            -->
+    <!-- ========================================================= -->
+    <section id="authPage" class="auth-section">
+        <div class="auth-card">
+            <div class="auth-header">
+                <span class="auth-logo-icon">🚀</span>
+                <h2>CodeQuest</h2>
+                <p>Coding Awareness & Learning Portal for College Students</p>
+            </div>
+
+            <!-- Toggle Tabs: Login vs Register -->
+            <div class="auth-toggle">
+                <button id="loginTabBtn" class="toggle-btn active" onclick="switchAuthTab('login')">Login</button>
+                <button id="signupTabBtn" class="toggle-btn" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- Form -->
+            <form id="authForm" onsubmit="event.preventDefault(); submitAuth();">
+                <div id="nameFieldBox" class="form-group hidden">
+                    <label for="userName">Full Name</label>
+                    <input type="text" id="userName" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="userEmail">Email Address</label>
+                    <input type="email" id="userEmail" placeholder="student@college.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" id="authSubmitBtn" class="btn primary-btn btn-full">Login</button>
+                <p id="authMessage" class="auth-msg"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 2. HOME / COURSES DASHBOARD                               -->
+    <!-- ========================================================= -->
+    <section id="homePage" class="page hidden">
+        <div class="welcome-banner">
+            <h2>Welcome to CodeQuest, <span id="welcomeStudentName">Student</span>! 👋</h2>
+            <p>Select a programming course below. Learn chapter-by-chapter, run live code, solve challenges, test your knowledge, and earn your certificate.</p>
+        </div>
+
+        <!-- Interactive Progress Stats Overview Bar -->
+        <div class="stats-overview-bar">
+            <div class="stat-box">
+                <span class="stat-number" id="statTracksCount">9</span>
+                <span class="stat-label">Coding Tracks</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="statCompletedChapters">0 / 72</span>
+                <span class="stat-label">Modules Done</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="statCertificatesCount">0 / 9</span>
+                <span class="stat-label">Certificates Earned</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number" id="statOverallPercent">0%</span>
+                <span class="stat-label">Overall Progress</span>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <div class="section-title-row">
+                <div>
+                    <h3>Programming Courses</h3>
+                    <p>Choose a language to start learning and running code</p>
+                </div>
+                <!-- Interactive Track Category Filter Buttons -->
+                <div class="course-filters">
+                    <button class="filter-btn active" onclick="filterCourses('all')">All Tracks (9)</button>
+                    <button class="filter-btn" onclick="filterCourses('core')">Core & Systems (5)</button>
+                    <button class="filter-btn" onclick="filterCourses('web')">Web & Database (4)</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="courseCardsGrid" class="cards-grid">
+            <!-- Dynamically populated course cards -->
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 3. COURSE CHAPTER / LESSON VIEW                           -->
+    <!-- ========================================================= -->
+    <section id="chapterPage" class="page hidden">
+        <div class="course-header">
+            <div>
+                <button class="back-link" onclick="showPage('homePage')">← Back to Courses</button>
+                <h2 id="activeCourseTitle">Python Course</h2>
+            </div>
+            <div class="chapter-indicator" id="chapterCountIndicator">Chapter 1 of 7</div>
+        </div>
+
+        <!-- Chapter Tabs (1 to 7) -->
+        <div id="chapterTabsNav" class="tabs-nav"></div>
+
+        <!-- Lesson Content & Editor Layout -->
+        <div class="lesson-layout">
+            <!-- Left: Theory & Example -->
+            <div class="lesson-box">
+                <h3 id="lessonTitle">Lesson Title</h3>
+                <p id="lessonExplanation">Lesson explanation text...</p>
+
+                <div class="example-code-header">
+                    <h4>Example Code:</h4>
+                    <div class="example-code-actions">
+                        <button class="btn secondary-btn btn-xs" onclick="toggleCheatSheet()">💡 Syntax Tips</button>
+                        <button class="btn primary-btn btn-xs" onclick="loadExampleIntoEditor()">📋 Load in Editor</button>
+                    </div>
+                </div>
+
+                <!-- Collapsable Cheat Sheet -->
+                <div id="cheatSheetDrawer" class="cheat-sheet-drawer hidden">
+                    <div class="cheat-sheet-title">Quick Syntax Reference:</div>
+                    <pre id="cheatSheetContent" class="cheat-sheet-text"></pre>
+                </div>
+
+                <pre class="code-preview"><code id="exampleCodeText"></code></pre>
+
+                <!-- Mini Challenge -->
+                <div class="challenge-box">
+                    <h4>💡 Quick Challenge</h4>
+                    <p id="challengeQuestion">Question goes here</p>
+                    <div class="challenge-input-row">
+                        <input type="text" id="challengeAnswer" placeholder="Type your answer...">
+                        <button class="btn primary-btn btn-sm" onclick="checkChallenge()">Check</button>
+                    </div>
+                    <p id="challengeFeedback" class="feedback-msg"></p>
+                </div>
+            </div>
+
+            <!-- Right: Interactive Code Runner -->
+            <div class="editor-box">
+                <div class="editor-header">
+                    <span>Interactive Code Editor:</span>
+                    <button class="btn success-btn btn-sm" onclick="runChapterCode()">▶ Run Code</button>
+                </div>
+                <textarea id="chapterCodeEditor" spellcheck="false"></textarea>
+
+                <div id="chapterStdinBox" class="stdin-row">
+                    <input type="text" id="chapterStdin" placeholder="Input for input(), Scanner, cin, or Console.ReadLine (optional)">
+                </div>
+
+                <!-- Live HTML Preview (Visible when learning HTML) -->
+                <div id="chapterHtmlPreviewBox" class="html-preview-container hidden">
+                    <div class="preview-title">🌐 Live HTML & CSS Rendered Web Preview:</div>
+                    <iframe id="chapterHtmlIframe" class="preview-iframe" sandbox="allow-scripts"></iframe>
+                </div>
+
+                <div class="terminal-box">
+                    <div class="terminal-title">Console Output:</div>
+                    <pre id="chapterOutput" class="terminal-text">Click "Run Code" to view output...</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="lesson-bottom-bar">
+            <button class="btn secondary-btn" onclick="showPage('homePage')">All Courses</button>
+            <button id="nextChapterBtn" class="btn primary-btn" onclick="goToNextChapter()">Next Chapter →</button>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 4. CODE LAB (STANDALONE PRACTICE)                         -->
+    <!-- ========================================================= -->
+    <section id="labPage" class="page hidden">
+        <div class="section-title">
+            <h2>💻 Code Lab (Practice Any Code)</h2>
+            <p>Write and run any code directly from your browser with instant output.</p>
+        </div>
+
+        <div class="lab-container">
+            <div class="lab-toolbar">
+                <div class="lab-tool">
+                    <label for="labLanguageSelect">Language:</label>
+                    <select id="labLanguageSelect" onchange="changeLabLanguage()">
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="c">C</option>
+                        <option value="cpp">C++</option>
+                        <option value="csharp">C# (.NET)</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="html">HTML & CSS (Web Design)</option>
+                        <option value="sql">SQL (Database Queries)</option>
+                        <option value="php">PHP (Server Scripting)</option>
+                    </select>
+                </div>
+
+                <button class="btn success-btn" onclick="runLabCode()">▶ Run Program</button>
+            </div>
+
+            <textarea id="labEditor" spellcheck="false"></textarea>
+
+            <div id="labStdinBox" class="lab-input-box">
+                <label for="labStdin">Program Input (stdin):</label>
+                <input type="text" id="labStdin" placeholder="Type input here if program uses input() / Scanner / scanf / Console.ReadLine...">
+            </div>
+
+            <!-- Live HTML Preview in Lab -->
+            <div id="labHtmlPreviewBox" class="html-preview-container hidden">
+                <div class="preview-title">🌐 Live Rendered Webpage:</div>
+                <iframe id="labHtmlIframe" class="preview-iframe" sandbox="allow-scripts"></iframe>
+            </div>
+
+            <div class="terminal-box">
+                <div class="terminal-title">Console Output:</div>
+                <pre id="labOutput" class="terminal-text">Console output will appear here...</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 5. QUIZ / TEST PAGE (10 QUESTIONS)                        -->
+    <!-- ========================================================= -->
+    <section id="quizPage" class="page hidden">
+        <div class="quiz-container">
+            <div class="section-title">
+                <h2>📝 Knowledge Quiz (10 Questions)</h2>
+                <p>Test your coding fundamentals. Score at least 6 out of 10 (60%) to pass and earn your certificate!</p>
+            </div>
+
+            <div class="quiz-course-picker">
+                <label for="quizCourseSelect">Select Language Quiz:</label>
+                <select id="quizCourseSelect" onchange="loadQuiz()">
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="c">C</option>
+                    <option value="cpp">C++</option>
+                    <option value="csharp">C# (.NET)</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="html">HTML & CSS</option>
+                    <option value="sql">SQL Database</option>
+                    <option value="php">PHP</option>
+                </select>
+            </div>
+
+            <div id="quizQuestionsList" class="quiz-list">
+                <!-- Dynamically populated 10 questions -->
+            </div>
+
+            <button class="btn primary-btn btn-full" onclick="submitQuiz()">Submit Quiz (10 Questions) 🎯</button>
+            <p id="quizResultMsg" class="quiz-result"></p>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 6. CERTIFICATE PAGE (LOCKED UNTIL ALL CHAPTERS & QUIZ DONE) -->
+    <!-- ========================================================= -->
+    <section id="certificatePage" class="page hidden">
+        <div class="cert-page-container">
+            <div class="section-title">
+                <h2>🎓 Course Certificate</h2>
+                <p>Complete all 8 course chapters and pass the 10-question quiz (score 6+/10) to unlock your certificate.</p>
+            </div>
+
+            <div class="cert-controls">
+                <div class="cert-picker">
+                    <label for="certLangSelect">Select Course:</label>
+                    <select id="certLangSelect" onchange="updateCertificatePreview()">
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="c">C</option>
+                        <option value="cpp">C++</option>
+                        <option value="csharp">C# (.NET)</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="html">HTML & CSS</option>
+                        <option value="sql">SQL Database</option>
+                        <option value="php">PHP</option>
+                    </select>
+                </div>
+                <button id="printCertBtn" class="btn primary-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+            </div>
+
+            <!-- LOCKED STATE CARD -->
+            <div id="certLockedBox" class="cert-locked-card hidden">
+                <div class="locked-icon">🔒</div>
+                <h3>Certificate Locked</h3>
+                <p class="locked-desc">This certificate is locked. You must complete all 8 chapters and pass the 10-question quiz for <strong id="lockedCourseName">Python</strong> to unlock it.</p>
+
+                <div class="cert-requirements-list">
+                    <div id="reqChapters" class="req-item pending">
+                        <span class="req-icon" id="reqChaptersIcon">🔒</span>
+                        <div class="req-info">
+                            <strong>1. Complete All 8 Chapters</strong>
+                            <p id="reqChaptersText">0 of 8 chapters completed</p>
+                        </div>
+                        <button class="btn secondary-btn btn-sm" id="reqChaptersBtn" onclick="goToCourseFromCert()">Go to Chapters →</button>
+                    </div>
+
+                    <div id="reqQuiz" class="req-item pending">
+                        <span class="req-icon" id="reqQuizIcon">🔒</span>
+                        <div class="req-info">
+                            <strong>2. Pass Knowledge Quiz (Score 6+/10)</strong>
+                            <p id="reqQuizText">Quiz not passed yet</p>
+                        </div>
+                        <button class="btn primary-btn btn-sm" id="reqQuizBtn" onclick="goToQuizFromCert()">Take Quiz 📝</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNLOCKED CERTIFICATE CARD -->
+            <div id="certificateCard" class="certificate-box hidden">
+                <div class="cert-inner">
+                    <div class="cert-icon">🎓</div>
+                    <h3>Certificate of Completion</h3>
+                    <p class="cert-sub">This certificate is awarded to</p>
+                    <h2 id="certStudentName">Student Name</h2>
+                    <p class="cert-desc">for successfully completing all 8 learning modules and passing the comprehensive 10-question assessment in</p>
+                    <div id="certCourseName" class="cert-badge">Python Programming</div>
+                    <div class="cert-status-tag">✓ Verified & Authenticated</div>
+                    <div class="cert-footer">
+                        <div>
+                            <strong>Issued By:</strong>
+                            <p>CodeQuest Platform</p>
+                        </div>
+                        <div>
+                            <strong>Date:</strong>
+                            <p id="certDate">October 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- SIMPLE FOOTER -->
+<footer class="site-footer">
+    <p>© 2026 CodeQuest - Coding Awareness for College Students</p>
+</footer>
+
+<!-- CELEBRATION CONFETTI CANVAS -->
+<canvas id="confettiCanvas"></canvas>
+
+<script src="script.js"></script>
+</body>
+</html>
