@@ -965,15 +965,21 @@ function logout() {
 
 function updateNavBadge() {
     if (currentUser) {
+        const name = currentUser.name || "Student";
         const userNameEl = document.getElementById("navUserName");
-        if (userNameEl) {
-            userNameEl.textContent = currentUser.name;
-        } else {
-            const badge = document.getElementById("navUserBadge");
-            if (badge) badge.textContent = "👋 " + currentUser.name;
+        if (userNameEl) userNameEl.textContent = name;
+
+        const initialEl = document.getElementById("navUserInitial");
+        if (initialEl) {
+            const initial = name.trim().charAt(0).toUpperCase() || "S";
+            initialEl.textContent = initial;
         }
+
         const welcomeName = document.getElementById("welcomeStudentName");
-        if (welcomeName) welcomeName.textContent = currentUser.name;
+        if (welcomeName) welcomeName.textContent = name;
+
+        const homeName = document.getElementById("homeStudentName");
+        if (homeName) homeName.textContent = name;
     }
 }
 

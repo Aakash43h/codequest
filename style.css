@@ -190,115 +190,164 @@ body {
 .nav-user-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 /* Student Profile Pill Button */
-.user-pill-btn {
+.nav-profile-pill {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: #f8fafc;
+    gap: 10px;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
-    padding: 5px 12px;
-    border-radius: 20px;
+    padding: 4px 12px 4px 5px;
+    border-radius: 24px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     outline: none;
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
-.user-pill-btn:hover {
-    background: #eef2ff;
-    border-color: #c7d2fe;
+.nav-profile-pill:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.user-pill-btn.active {
+.nav-profile-pill.active {
     background: #eef2ff;
     border-color: #4361ee;
     box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
 }
 
-.user-status-dot {
-    width: 7px;
-    height: 7px;
-    background: #10b981;
+/* Circular Avatar with Active Dot */
+.profile-avatar-mini {
+    position: relative;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    background: linear-gradient(135deg, #4361ee 0%, #3a86ff 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(67, 97, 238, 0.25);
     flex-shrink: 0;
 }
 
-.user-pill-name {
+.avatar-online-dot {
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    border: 1.5px solid #ffffff;
+}
+
+/* Text Container inside Profile Pill */
+.profile-pill-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.15;
+}
+
+.profile-pill-name {
     font-size: 12.5px;
     font-weight: 700;
-    color: var(--dark);
-    max-width: 110px;
+    color: #1e293b;
+    max-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.user-pill-role {
-    font-size: 10px;
-    font-weight: 700;
+.nav-profile-pill.active .profile-pill-name {
     color: #4361ee;
-    background: #ffffff;
-    padding: 1px 6px;
-    border-radius: 10px;
-    border: 1px solid #e0e7ff;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
 }
 
-/* Compact Tool Actions */
-.user-actions-pair {
+.profile-pill-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.nav-profile-pill.active .profile-pill-label {
+    color: #4361ee;
+}
+
+.profile-pill-chevron {
+    font-size: 14px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-left: 2px;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.nav-profile-pill:hover .profile-pill-chevron {
+    transform: translateX(2px);
+    color: #4361ee;
+}
+
+/* User Action Buttons Pair */
+.nav-user-actions {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.nav-tool-btn {
+.nav-action-pill {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    border: 1px solid transparent;
-    padding: 5px 10px;
+    height: 32px;
+    padding: 0 10px;
     font-size: 12px;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.15s ease;
     white-space: nowrap;
+    border: 1px solid transparent;
 }
 
-.nav-tool-btn.reset-tool {
+.nav-action-pill.reset-pill {
     background: #f1f5f9;
     color: #475569;
     border-color: #e2e8f0;
 }
 
-.nav-tool-btn.reset-tool:hover {
+.nav-action-pill.reset-pill:hover {
     background: #e2e8f0;
     color: #0f172a;
     border-color: #cbd5e1;
 }
 
-.nav-tool-btn.logout-tool {
+.nav-action-pill.logout-pill {
     background: #fef2f2;
     color: #dc2626;
     border-color: #fee2e2;
 }
 
-.nav-tool-btn.logout-tool:hover {
+.nav-action-pill.logout-pill:hover {
     background: #fee2e2;
     color: #b91c1c;
     border-color: #fecaca;
 }
 
-.tool-icon {
+.nav-action-pill .action-icon {
     font-size: 12px;
 }
 
-.tool-label {
+.nav-action-pill .action-text {
     font-size: 11.5px;
 }
 
@@ -1743,18 +1792,18 @@ body {
         gap: 8px;
     }
 
-    .nav-links .user-pill-btn {
+    .nav-links .nav-profile-pill {
         justify-content: center;
         padding: 8px;
     }
 
-    .nav-links .user-actions-pair {
+    .nav-links .nav-user-actions {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
 
-    .nav-links .nav-tool-btn {
+    .nav-links .nav-action-pill {
         justify-content: center;
         padding: 8px;
     }

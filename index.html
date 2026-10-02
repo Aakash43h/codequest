@@ -52,20 +52,28 @@
 
             <!-- 3. Student Profile & Controls -->
             <div class="nav-user-group">
-                <button id="navProfileBtn" class="user-pill-btn" onclick="showPage('profilePage')" title="View My Profile & Progress">
-                    <span class="user-status-dot"></span>
-                    <span id="navUserName" class="user-pill-name">Student</span>
-                    <span class="user-pill-role">Profile</span>
+                <!-- Sleek Student Profile Button with Avatar -->
+                <button id="navProfileBtn" class="nav-profile-pill" onclick="showPage('profilePage')" title="View My Profile & Progress">
+                    <div class="profile-avatar-mini">
+                        <span id="navUserInitial">S</span>
+                        <span class="avatar-online-dot"></span>
+                    </div>
+                    <div class="profile-pill-info">
+                        <span id="navUserName" class="profile-pill-name">Student</span>
+                        <span class="profile-pill-label">Profile</span>
+                    </div>
+                    <span class="profile-pill-chevron">›</span>
                 </button>
 
-                <div class="user-actions-pair">
-                    <button class="nav-tool-btn reset-tool" onclick="openResetModal()" title="Reset progress to practice again">
-                        <span class="tool-icon">🔄</span>
-                        <span class="tool-label">Reset</span>
+                <!-- Actions Pair: Reset & Logout -->
+                <div class="nav-user-actions">
+                    <button class="nav-action-pill reset-pill" onclick="openResetModal()" title="Reset progress to practice again">
+                        <span class="action-icon">🔄</span>
+                        <span class="action-text">Reset</span>
                     </button>
-                    <button class="nav-tool-btn logout-tool" onclick="logout()" title="Log out of CodeQuest">
-                        <span class="tool-icon">🚪</span>
-                        <span class="tool-label">Logout</span>
+                    <button class="nav-action-pill logout-pill" onclick="logout()" title="Log out of CodeQuest">
+                        <span class="action-icon">🚪</span>
+                        <span class="action-text">Logout</span>
                     </button>
                 </div>
             </div>
