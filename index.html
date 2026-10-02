@@ -238,11 +238,22 @@
 
                 <!-- Mini Challenge -->
                 <div class="challenge-box">
-                    <h4>💡 Quick Challenge</h4>
+                    <div class="challenge-title-row">
+                        <h4>🎯 Quick Challenge</h4>
+                        <span class="challenge-badge">Knowledge Check</span>
+                    </div>
                     <p id="challengeQuestion">Question goes here</p>
                     <div class="challenge-input-row">
-                        <input type="text" id="challengeAnswer" placeholder="Type your answer...">
+                        <input type="text" id="challengeAnswer" placeholder="Type your answer..." onkeydown="if(event.key==='Enter') checkChallenge()">
                         <button class="btn primary-btn btn-sm" onclick="checkChallenge()">Check</button>
+                        <button class="btn btn-show-ans btn-sm" id="showAnswerBtn" onclick="showChallengeAnswer()" title="Stuck? Show answer and pass">💡 Show Ans</button>
+                    </div>
+                    <div id="challengeAnswerBox" class="challenge-ans-box hidden">
+                        <div class="ans-left">
+                            <span class="ans-badge">💡 Correct Answer:</span>
+                            <code id="challengeAnswerText"></code>
+                        </div>
+                        <button class="btn-pass-now" onclick="autoPassChallenge()" title="Apply answer and complete chapter">Pass Chapter ✓</button>
                     </div>
                     <p id="challengeFeedback" class="feedback-msg"></p>
                 </div>

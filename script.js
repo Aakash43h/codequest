@@ -1229,8 +1229,27 @@ function loadChapter(index) {
     document.getElementById("exampleCodeText").textContent = ch.code;
     document.getElementById("chapterCodeEditor").value = ch.code;
     document.getElementById("challengeQuestion").textContent = ch.challenge;
-    document.getElementById("challengeAnswer").value = "";
-    document.getElementById("challengeFeedback").textContent = "";
+    
+    const ansBox = document.getElementById("challengeAnswerBox");
+    if (ansBox) ansBox.classList.add("hidden");
+
+    if (completedList.includes(index)) {
+        document.getElementById("challengeAnswer").value = ch.answer;
+        const totalChs = c.chapters ? c.chapters.length : 8;
+        const allDone = completedList.length >= totalChs;
+        const quizPassed = Boolean(userProgress[currentLanguage] && userProgress[currentLanguage].testPassed);
+        if (allDone && quizPassed) {
+            document.getElementById("challengeFeedback").textContent = "🎉 All chapters completed and Quiz passed! Certificate UNLOCKED! 🎓";
+        } else if (allDone && !quizPassed) {
+            document.getElementById("challengeFeedback").textContent = "🎉 All chapters completed! Take the Knowledge Quiz to unlock your Certificate 📝";
+        } else {
+            document.getElementById("challengeFeedback").textContent = "✅ Chapter completed! (Answer: " + ch.answer + ")";
+        }
+        document.getElementById("challengeFeedback").className = "feedback-msg success";
+    } else {
+        document.getElementById("challengeAnswer").value = "";
+        document.getElementById("challengeFeedback").textContent = "";
+    }
 
     // Syntax cheat sheet content
     document.getElementById("cheatSheetContent").textContent = cheatSheets[currentLanguage] || "";
@@ -1278,6 +1297,39 @@ function renderHtmlPreview(iframeId, htmlContent) {
     doc.open();
     doc.write(htmlContent);
     doc.close();
+}
+
+function showChallengeAnswer() {
+    const ch = courses[currentLanguage].chapters[currentChapterIndex];
+    if (!ch) return;
+
+    const input = document.getElementById("challengeAnswer");
+    const ansBox = document.getElementById("challengeAnswerBox");
+    const ansText = document.getElementById("challengeAnswerText");
+    const fb = document.getElementById("challengeFeedback");
+
+    // Automatically fill the input with the correct answer
+    input.value = ch.answer;
+
+    // Reveal the answer banner
+    if (ansBox && ansText) {
+        ansText.textContent = ch.answer;
+        ansBox.classList.remove("hidden");
+    }
+
+    if (fb) {
+        fb.textContent = `💡 Answer revealed: "${ch.answer}". Click 'Pass Chapter ✓' or 'Check' to complete.`;
+        fb.className = "feedback-msg info";
+    }
+
+    input.focus();
+}
+
+function autoPassChallenge() {
+    const ch = courses[currentLanguage].chapters[currentChapterIndex];
+    if (!ch) return;
+    document.getElementById("challengeAnswer").value = ch.answer;
+    checkChallenge();
 }
 
 function checkChallenge() {
