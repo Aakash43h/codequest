@@ -17,7 +17,7 @@ const courses = {
             {
                 title: "1. Hello World & Print",
                 text: "Python uses the print() function to display text or values to the screen.",
-                code: 'print("Hello, College Coder!")\nprint("Welcome to Python programming.")',
+                code: 'print("Hello, Young Coder!")\nprint("Welcome to Python programming.")',
                 challenge: "What function outputs text to the screen in Python?",
                 answer: "print"
             },
@@ -277,7 +277,7 @@ const courses = {
             {
                 title: "1. C# Class & Console.WriteLine",
                 text: "C# programs are structured into classes and namespaces, starting inside static void Main().",
-                code: 'using System;\n\npublic class Program {\n    public static void Main() {\n        Console.WriteLine("Hello from C# and .NET!");\n        Console.WriteLine("Welcome to college application development.");\n    }\n}',
+                code: 'using System;\n\npublic class Program {\n    public static void Main() {\n        Console.WriteLine("Hello from C# and .NET!");\n        Console.WriteLine("Welcome to software application development.");\n    }\n}',
                 challenge: "What method writes a line of text to the console in C#?",
                 answer: "WriteLine"
             },
@@ -414,7 +414,7 @@ const courses = {
             {
                 title: "2. Links & Images",
                 text: "Hyperlinks connect pages using <a> tags with href attributes, and <img> embeds graphics.",
-                code: '<a href="https://codequest.edu" target="_blank">Visit College Portal</a>\n<br><br>\n<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300" alt="Laptop Code" style="border-radius: 8px; width: 280px;">',
+                code: '<a href="https://codequest.edu" target="_blank">Visit School Coding Portal</a>\n<br><br>\n<img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300" alt="Laptop Code" style="border-radius: 8px; width: 280px;">',
                 challenge: "Which attribute specifies the destination URL of a link in an <a> tag?",
                 answer: "href"
             },
@@ -1498,7 +1498,7 @@ const defaultSnippets = {
     csharp: 'using System;\n\npublic class Program {\n    public static void Main() {\n        Console.WriteLine("Hello from C# .NET Code Lab!");\n        for (int i = 1; i <= 5; i++) {\n            Console.WriteLine($"Step: {i}");\n        }\n    }\n}',
     javascript: 'console.log("Hello from JavaScript!");\nlet numbers = [10, 20, 30];\nnumbers.forEach(n => console.log("Value:", n));',
     html: '<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; text-align: center; padding: 20px; background: #eef2ff; }\n    h2 { color: #4361ee; }\n    button { background: #4361ee; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }\n  </style>\n</head>\n<body>\n  <h2>🌐 Live HTML & CSS Playground</h2>\n  <p>Edit this markup and click Run Program to see live changes.</p>\n  <button onclick="alert(\'Welcome to Web Design!\')">Click Me!</button>\n</body>\n</html>',
-    sql: '-- Sample College Students Table Query\nSELECT roll_no, name, branch, marks, city\nFROM students\nWHERE marks >= 75\nORDER BY marks DESC;',
+    sql: '-- Sample College Students Table Query\nSELECT roll_no, name, class_grade, marks, city\nFROM students\nWHERE marks >= 75\nORDER BY marks DESC;',
     php: '<?php\n$greeting = "Hello from PHP Code Lab!";\necho $greeting . "\\n";\nfor ($i = 1; $i <= 5; $i++) {\n    echo "Count: " . $i . "\\n";\n}\n?>'
 };
 
