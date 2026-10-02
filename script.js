@@ -906,12 +906,6 @@ async function submitAuth() {
     }
 }
 
-function exploreAsGuest() {
-    currentUser = { name: "Guest Student", email: "guest@codequest.edu" };
-    localStorage.setItem("cq_user", JSON.stringify(currentUser));
-    loginSuccess();
-}
-
 function loginSuccess() {
     document.getElementById("authPage").classList.add("hidden");
     document.getElementById("mainHeader").classList.remove("hidden");
