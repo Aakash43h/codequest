@@ -11,6 +11,7 @@
 <!-- TOP NAVIGATION BAR (Visible when logged in) -->
 <header id="mainHeader" class="site-header hidden">
     <div class="nav-container">
+        <!-- 1. Brand Logo -->
         <div class="logo" onclick="showPage('homePage')">
             <div class="logo-badge">
                 <span class="logo-icon">🚀</span>
@@ -20,48 +21,53 @@
                     <h1>CodeQuest</h1>
                     <span class="logo-tag">Portal</span>
                 </div>
-                <span class="logo-sub">Coding Awareness Platform</span>
             </div>
         </div>
 
         <!-- Mobile Menu Toggle Button -->
         <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
 
+        <!-- 2. Primary Navigation Links -->
         <nav id="navLinks" class="nav-links">
-            <button id="navHomeBtn" class="nav-btn active" onclick="showPage('homePage')">
-                <span class="nav-btn-icon">🏠</span> Home
-            </button>
-            <button id="navCoursesBtn" class="nav-btn" onclick="showPage('coursesPage')">
-                <span class="nav-btn-icon">📚</span> Courses
-            </button>
-            <button id="navLabBtn" class="nav-btn" onclick="showPage('labPage')">
-                <span class="nav-btn-icon">💻</span> Code Lab
-            </button>
-            <button id="navQuizBtn" class="nav-btn" onclick="showPage('quizPage')">
-                <span class="nav-btn-icon">📝</span> Quiz
-            </button>
-            <button id="navCertBtn" class="nav-btn" onclick="showPage('certificatePage')">
-                <span class="nav-btn-icon">🎓</span> Certificate
-            </button>
-            <button id="navProfileBtn" class="nav-btn" onclick="showPage('profilePage')">
-                <span class="nav-btn-icon">👤</span> Profile
-            </button>
+            <div class="nav-main-group">
+                <button id="navHomeBtn" class="nav-btn active" onclick="showPage('homePage')">
+                    <span class="nav-btn-icon">🏠</span> Home
+                </button>
+                <button id="navCoursesBtn" class="nav-btn" onclick="showPage('coursesPage')">
+                    <span class="nav-btn-icon">📚</span> Courses
+                </button>
+                <button id="navLabBtn" class="nav-btn" onclick="showPage('labPage')">
+                    <span class="nav-btn-icon">💻</span> Code Lab
+                </button>
+                <button id="navQuizBtn" class="nav-btn" onclick="showPage('quizPage')">
+                    <span class="nav-btn-icon">📝</span> Quiz
+                </button>
+                <button id="navCertBtn" class="nav-btn" onclick="showPage('certificatePage')">
+                    <span class="nav-btn-icon">🎓</span> Certificate
+                </button>
+            </div>
 
             <!-- Nav Divider -->
             <div class="nav-divider"></div>
 
-            <!-- Student Profile Badge & Action Buttons -->
+            <!-- 3. Student Profile & Controls -->
             <div class="nav-user-group">
-                <div id="navUserBadge" class="user-pill clickable-pill" onclick="showPage('profilePage')" title="View My Profile & Progress">
+                <button id="navProfileBtn" class="user-pill-btn" onclick="showPage('profilePage')" title="View My Profile & Progress">
                     <span class="user-status-dot"></span>
-                    <span id="navUserName">Student</span>
+                    <span id="navUserName" class="user-pill-name">Student</span>
+                    <span class="user-pill-role">Profile</span>
+                </button>
+
+                <div class="user-actions-pair">
+                    <button class="nav-tool-btn reset-tool" onclick="openResetModal()" title="Reset progress to practice again">
+                        <span class="tool-icon">🔄</span>
+                        <span class="tool-label">Reset</span>
+                    </button>
+                    <button class="nav-tool-btn logout-tool" onclick="logout()" title="Log out of CodeQuest">
+                        <span class="tool-icon">🚪</span>
+                        <span class="tool-label">Logout</span>
+                    </button>
                 </div>
-                <button class="nav-action-btn reset-btn" onclick="openResetModal()" title="Reset progress to practice again">
-                    <span class="action-icon">🔄</span> Reset
-                </button>
-                <button class="nav-action-btn logout-btn" onclick="logout()" title="Log out of CodeQuest">
-                    <span class="action-icon">🚪</span> Logout
-                </button>
             </div>
         </nav>
     </div>

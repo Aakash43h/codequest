@@ -1073,6 +1073,9 @@ function showPage(pageId) {
 
     // Update active nav button
     document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
+    const profileBtn = document.getElementById("navProfileBtn");
+    if (profileBtn) profileBtn.classList.remove("active");
+
     if (pageId === "homePage") {
         const b = document.getElementById("navHomeBtn");
         if (b) b.classList.add("active");
@@ -1096,8 +1099,7 @@ function showPage(pageId) {
         populateCertLangDropdown();
         updateCertificatePreview();
     } else if (pageId === "profilePage") {
-        const b = document.getElementById("navProfileBtn");
-        if (b) b.classList.add("active");
+        if (profileBtn) profileBtn.classList.add("active");
         renderProfilePage();
     }
 

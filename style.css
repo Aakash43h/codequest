@@ -37,48 +37,52 @@ body {
 }
 
 /* ---------------------------------------------------------
-   UPGRADED TOP NAVIGATION BAR (GLASSMORPHIC STICKY)
+   UPGRADED TOP NAVIGATION BAR (ORGANIZED & SLEEK)
    --------------------------------------------------------- */
 .site-header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(226, 232, 240, 0.85);
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.04);
+    height: 64px;
+    display: flex;
+    align-items: center;
     transition: all 0.2s ease;
 }
 
 .nav-container {
-    max-width: 1140px;
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
-    padding: 10px 24px;
+    padding: 0 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
 }
 
-/* Upgraded Brand Logo */
+/* 1. Brand Logo */
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     cursor: pointer;
     text-decoration: none;
+    flex-shrink: 0;
 }
 
 .logo-badge {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     background: linear-gradient(135deg, #4361ee 0%, #3a86ff 100%);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+    border-radius: 9px;
+    box-shadow: 0 3px 10px rgba(67, 97, 238, 0.25);
     transition: transform 0.2s ease;
 }
 
@@ -87,7 +91,7 @@ body {
 }
 
 .logo-badge .logo-icon {
-    font-size: 20px;
+    font-size: 19px;
 }
 
 .logo-text {
@@ -102,28 +106,23 @@ body {
 }
 
 .logo-title-row h1 {
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 800;
     color: var(--dark);
     letter-spacing: -0.4px;
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .logo-tag {
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 700;
     color: #4361ee;
     background: #eef2ff;
     padding: 2px 6px;
     border-radius: 4px;
-    letter-spacing: 0.2px;
-}
-
-.logo-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-weight: 500;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
 .mobile-toggle {
@@ -136,30 +135,37 @@ body {
     cursor: pointer;
 }
 
-/* Nav Pill Links */
+/* 2. Nav Links Container */
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
+}
+
+.nav-main-group {
+    display: flex;
+    align-items: center;
+    gap: 3px;
 }
 
 .nav-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: transparent;
     border: none;
-    padding: 8px 14px;
-    font-size: 13.5px;
+    padding: 7px 12px;
+    font-size: 13px;
     font-weight: 600;
     color: #64748b;
-    border-radius: 20px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.15s ease;
+    white-space: nowrap;
 }
 
 .nav-btn-icon {
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .nav-btn:hover {
@@ -168,36 +174,48 @@ body {
 }
 
 .nav-btn.active {
-    background: rgba(67, 97, 238, 0.08);
+    background: #eef2ff;
     color: #4361ee;
-    box-shadow: inset 0 0 0 1px rgba(67, 97, 238, 0.2);
+    font-weight: 700;
 }
 
 .nav-divider {
     width: 1px;
     height: 24px;
-    background: var(--border);
-    margin: 0 4px;
+    background: #e2e8f0;
+    flex-shrink: 0;
 }
 
-/* User Group & Actions */
+/* 3. User Group & Actions */
 .nav-user-group {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.user-pill {
+/* Student Profile Pill Button */
+.user-pill-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--dark);
+    gap: 8px;
     background: #f8fafc;
-    border: 1px solid var(--border);
+    border: 1px solid #e2e8f0;
     padding: 5px 12px;
     border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.user-pill-btn:hover {
+    background: #eef2ff;
+    border-color: #c7d2fe;
+}
+
+.user-pill-btn.active {
+    background: #eef2ff;
+    border-color: #4361ee;
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
 }
 
 .user-status-dot {
@@ -206,42 +224,82 @@ body {
     background: #10b981;
     border-radius: 50%;
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    flex-shrink: 0;
 }
 
-.nav-action-btn {
+.user-pill-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--dark);
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-pill-role {
+    font-size: 10px;
+    font-weight: 700;
+    color: #4361ee;
+    background: #ffffff;
+    padding: 1px 6px;
+    border-radius: 10px;
+    border: 1px solid #e0e7ff;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Compact Tool Actions */
+.user-actions-pair {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-tool-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    border: none;
-    padding: 6px 12px;
-    font-size: 12.5px;
+    gap: 4px;
+    border: 1px solid transparent;
+    padding: 5px 10px;
+    font-size: 12px;
     font-weight: 600;
-    border-radius: 20px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.15s ease;
+    white-space: nowrap;
 }
 
-.nav-action-btn.reset-btn {
+.nav-tool-btn.reset-tool {
     background: #f1f5f9;
     color: #475569;
-    border: 1px solid #cbd5e1;
+    border-color: #e2e8f0;
 }
 
-.nav-action-btn.reset-btn:hover {
+.nav-tool-btn.reset-tool:hover {
     background: #e2e8f0;
     color: #0f172a;
-    border-color: #94a3b8;
+    border-color: #cbd5e1;
 }
 
-.nav-action-btn.logout-btn {
+.nav-tool-btn.logout-tool {
     background: #fef2f2;
     color: #dc2626;
-    border: 1px solid #fecaca;
+    border-color: #fee2e2;
 }
 
-.nav-action-btn.logout-btn:hover {
+.nav-tool-btn.logout-tool:hover {
     background: #fee2e2;
     color: #b91c1c;
+    border-color: #fecaca;
+}
+
+.tool-icon {
+    font-size: 12px;
+}
+
+.tool-label {
+    font-size: 11.5px;
 }
 
 /* Course Reset Buttons on Pages */
@@ -1661,6 +1719,17 @@ body {
         display: flex;
     }
 
+    .nav-links .nav-main-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .nav-links .nav-btn {
+        padding: 9px 12px;
+        font-size: 13.5px;
+    }
+
     .nav-links .nav-divider {
         width: 100%;
         height: 1px;
@@ -1674,12 +1743,18 @@ body {
         gap: 8px;
     }
 
-    .nav-links .user-pill {
+    .nav-links .user-pill-btn {
         justify-content: center;
-        margin: 0;
+        padding: 8px;
     }
 
-    .nav-links .nav-action-btn {
+    .nav-links .user-actions-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .nav-links .nav-tool-btn {
         justify-content: center;
         padding: 8px;
     }
