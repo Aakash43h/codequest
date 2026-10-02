@@ -433,61 +433,7 @@ body {
 }
 
 
-/* Password Label Row with Generator Link */
-.password-label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-}
-
-.password-label-row label {
-    margin-bottom: 0;
-}
-
-.btn-text-link {
-    background: none;
-    border: none;
-    color: var(--primary);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.2s;
-}
-
-.btn-text-link:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
-
-.password-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-input-wrapper input {
-    padding-right: 40px !important;
-}
-
-.btn-toggle-pass {
-    position: absolute;
-    right: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 4px;
-    line-height: 1;
-    opacity: 0.6;
-    transition: opacity 0.2s;
-}
-
-.btn-toggle-pass:hover {
-    opacity: 1;
-}
-
+/* Password Match Hint */
 .password-match-hint {
     display: block;
     font-size: 12px;

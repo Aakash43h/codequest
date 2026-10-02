@@ -815,7 +815,6 @@ function switchAuthTab(mode) {
     const signupBtn = document.getElementById("signupTabBtn");
     const nameBox = document.getElementById("nameFieldBox");
     const confirmBox = document.getElementById("confirmPasswordFieldBox");
-    const generateBtn = document.getElementById("generatePassBtn");
     const submitBtn = document.getElementById("authSubmitBtn");
     const msg = document.getElementById("authMessage");
     const hint = document.getElementById("passwordMatchHint");
@@ -828,44 +827,13 @@ function switchAuthTab(mode) {
         loginBtn.classList.remove("active");
         if (nameBox) nameBox.classList.remove("hidden");
         if (confirmBox) confirmBox.classList.remove("hidden");
-        if (generateBtn) generateBtn.classList.remove("hidden");
         submitBtn.textContent = "Sign Up";
     } else {
         loginBtn.classList.add("active");
         signupBtn.classList.remove("active");
         if (nameBox) nameBox.classList.add("hidden");
         if (confirmBox) confirmBox.classList.add("hidden");
-        if (generateBtn) generateBtn.classList.add("hidden");
         submitBtn.textContent = "Login";
-    }
-}
-
-function generateRandomPassword() {
-    const words = ["Coder", "Quest", "Future", "Smart", "Campus", "Learn", "Logic"];
-    const specials = ["@", "#", "$", "!"];
-    const word = words[Math.floor(Math.random() * words.length)];
-    const num = Math.floor(100 + Math.random() * 900);
-    const spec = specials[Math.floor(Math.random() * specials.length)];
-    const generated = `${word}${spec}${num}`;
-
-    const passInput = document.getElementById("userPassword");
-    const confirmInput = document.getElementById("userConfirmPassword");
-    const hint = document.getElementById("passwordMatchHint");
-
-    passInput.value = generated;
-    confirmInput.value = generated;
-    passInput.type = "text";
-    confirmInput.type = "text";
-
-    if (hint) {
-        hint.textContent = "✓ Password generated & confirmed! (Click eye icon to hide)";
-        hint.className = "password-match-hint success";
-    }
-
-    const msg = document.getElementById("authMessage");
-    if (msg) {
-        msg.textContent = `Generated password: ${generated}`;
-        msg.className = "auth-msg success";
     }
 }
 
@@ -888,20 +856,6 @@ function checkPasswordMatch() {
     } else {
         hint.textContent = "❌ Passwords do not match";
         hint.className = "password-match-hint error";
-    }
-}
-
-function togglePasswordVisibility(inputId, btn) {
-    const input = document.getElementById(inputId);
-    if (!input) return;
-    if (input.type === "password") {
-        input.type = "text";
-        btn.textContent = "🔒";
-        btn.title = "Hide Password";
-    } else {
-        input.type = "password";
-        btn.textContent = "👁️";
-        btn.title = "Show Password";
     }
 }
 

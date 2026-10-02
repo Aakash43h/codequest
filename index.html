@@ -101,23 +101,14 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="password-label-row">
-                        <label for="userPassword">Password</label>
-                        <button type="button" id="generatePassBtn" class="btn-text-link hidden" onclick="generateRandomPassword()">🎲 Suggest Password</button>
-                    </div>
-                    <div class="password-input-wrapper">
-                        <input type="password" id="userPassword" placeholder="Enter your password" required oninput="checkPasswordMatch()">
-                        <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('userPassword', this)" title="Show/Hide Password">👁️</button>
-                    </div>
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword" placeholder="Enter your password" required oninput="checkPasswordMatch()">
                 </div>
 
                 <!-- Confirm Password Field (Only shown in Sign Up mode) -->
                 <div id="confirmPasswordFieldBox" class="form-group hidden">
                     <label for="userConfirmPassword">Confirm Password</label>
-                    <div class="password-input-wrapper">
-                        <input type="password" id="userConfirmPassword" placeholder="Re-enter your password to confirm" oninput="checkPasswordMatch()">
-                        <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility('userConfirmPassword', this)" title="Show/Hide Password">👁️</button>
-                    </div>
+                    <input type="password" id="userConfirmPassword" placeholder="Confirm your password" oninput="checkPasswordMatch()">
                     <span id="passwordMatchHint" class="password-match-hint"></span>
                 </div>
 
