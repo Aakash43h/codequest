@@ -46,7 +46,7 @@
             <div class="ambient-orb orb-teal"></div>
             <div class="ambient-orb orb-amber"></div>
 
-            <!-- Floating Code Badges & Tech Chips in Background -->
+            <!-- Floating Code Badges in Background -->
             <div class="code-badge badge-1">
                 <span class="badge-icon">🐍</span>
                 <span class="badge-text">def learn(): return "Python"</span>
@@ -73,41 +73,117 @@
             </div>
         </div>
 
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="auth-logo-badge">
-                    <span class="auth-logo-icon">🚀</span>
+        <!-- Two-Column Balanced Hero Container -->
+        <div class="auth-layout-container">
+            <!-- Left Column: Platform Showcase, Highlights & Live Demo Terminal -->
+            <div class="auth-showcase">
+                <div class="showcase-badge">🚀 College Coding Awareness Platform</div>
+                <h1 class="showcase-title">Build Practical Coding Skills Across 9 Programming Tracks</h1>
+                <p class="showcase-desc">
+                    Practice coding directly in your browser with zero installation. Learn core concepts through 72 hands-on modules, test your skills with 10-question quizzes, and earn verifiable certificates.
+                </p>
+
+                <!-- 4 Quick Highlight Cards -->
+                <div class="showcase-grid">
+                    <div class="showcase-card">
+                        <div class="showcase-card-icon">⚡</div>
+                        <div>
+                            <h4>9 Learning Tracks</h4>
+                            <p>Python, Java, C, C++, C#, JS, Web, SQL & PHP</p>
+                        </div>
+                    </div>
+                    <div class="showcase-card">
+                        <div class="showcase-card-icon">💻</div>
+                        <div>
+                            <h4>In-Browser Compiler</h4>
+                            <p>Instant code execution without installing IDEs</p>
+                        </div>
+                    </div>
+                    <div class="showcase-card">
+                        <div class="showcase-card-icon">📝</div>
+                        <div>
+                            <h4>10-Question Quizzes</h4>
+                            <p>Instant feedback and 60% passing benchmark</p>
+                        </div>
+                    </div>
+                    <div class="showcase-card">
+                        <div class="showcase-card-icon">🎓</div>
+                        <div>
+                            <h4>Locked Certificates</h4>
+                            <p>Verified certificates unlocked on completion</p>
+                        </div>
+                    </div>
                 </div>
-                <h2>CodeQuest</h2>
-                <p>Coding Awareness & Learning Portal for College Students</p>
+
+                <!-- Interactive Code Snippet Preview -->
+                <div class="auth-terminal-box">
+                    <div class="terminal-bar">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title-text">codequest_preview.py</span>
+                        <span class="terminal-tag">LIVE RUNNER</span>
+                    </div>
+                    <pre class="terminal-code"><code><span class="token-kw">def</span> <span class="token-fn">start_learning</span>(student):
+    skills = [<span class="token-str">"Python"</span>, <span class="token-str">"Java"</span>, <span class="token-str">"C++"</span>, <span class="token-str">"SQL"</span>, <span class="token-str">"PHP"</span>]
+    <span class="token-kw">return</span> <span class="token-str">f"Welcome, {student}! 72 interactive modules ready."</span>
+
+<span class="token-fn">print</span>(start_learning(<span class="token-str">"College Coder"</span>))</code></pre>
+                    <div class="terminal-output-bar">
+                        <span class="terminal-prompt">&gt;</span>
+                        <span class="terminal-res">Welcome, College Coder! 72 interactive modules ready. 🚀</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- Toggle Tabs: Login vs Register -->
-            <div class="auth-toggle">
-                <button id="loginTabBtn" class="toggle-btn active" onclick="switchAuthTab('login')">Login</button>
-                <button id="signupTabBtn" class="toggle-btn" onclick="switchAuthTab('signup')">Sign Up</button>
+            <!-- Right Column: Glassmorphic Login/Registration Card -->
+            <div class="auth-card-wrapper">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <div class="auth-logo-badge">
+                            <span class="auth-logo-icon">🚀</span>
+                        </div>
+                        <h2>CodeQuest Portal</h2>
+                        <p>Sign in to resume lessons & track your progress</p>
+                    </div>
+
+                    <!-- Toggle Tabs: Login vs Register -->
+                    <div class="auth-toggle">
+                        <button id="loginTabBtn" class="toggle-btn active" onclick="switchAuthTab('login')">Login</button>
+                        <button id="signupTabBtn" class="toggle-btn" onclick="switchAuthTab('signup')">Sign Up</button>
+                    </div>
+
+                    <!-- Form -->
+                    <form id="authForm" onsubmit="event.preventDefault(); submitAuth();">
+                        <div id="nameFieldBox" class="form-group hidden">
+                            <label for="userName">Full Name</label>
+                            <input type="text" id="userName" placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userEmail">Email Address</label>
+                            <input type="email" id="userEmail" placeholder="student@college.edu" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userPassword">Password</label>
+                            <input type="password" id="userPassword" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" id="authSubmitBtn" class="btn primary-btn btn-full">Login</button>
+                        <p id="authMessage" class="auth-msg"></p>
+                    </form>
+
+                    <!-- Quick Guest Explore Option -->
+                    <div class="auth-guest-box">
+                        <button type="button" class="btn-guest" onclick="exploreAsGuest()">
+                            Explore Courses as Guest →
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <!-- Form -->
-            <form id="authForm" onsubmit="event.preventDefault(); submitAuth();">
-                <div id="nameFieldBox" class="form-group hidden">
-                    <label for="userName">Full Name</label>
-                    <input type="text" id="userName" placeholder="Enter your full name">
-                </div>
-
-                <div class="form-group">
-                    <label for="userEmail">Email Address</label>
-                    <input type="email" id="userEmail" placeholder="student@college.edu" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="userPassword">Password</label>
-                    <input type="password" id="userPassword" placeholder="Enter your password" required>
-                </div>
-
-                <button type="submit" id="authSubmitBtn" class="btn primary-btn btn-full">Login</button>
-                <p id="authMessage" class="auth-msg"></p>
-            </form>
         </div>
     </section>
 
