@@ -1058,7 +1058,7 @@ function showToast(message) {
 // 7. NAVIGATION & PAGE SWITCHING
 // ---------------------------------------------------------
 function showPage(pageId) {
-    const pages = ["authPage", "homePage", "chapterPage", "labPage", "quizPage", "certificatePage"];
+    const pages = ["authPage", "homePage", "chapterPage", "labPage", "quizPage", "certificatePage", "profilePage"];
     pages.forEach(p => {
         const el = document.getElementById(p);
         if (el) el.classList.add("hidden");
@@ -1068,24 +1068,33 @@ function showPage(pageId) {
     if (target) target.classList.remove("hidden");
 
     // Close mobile nav menu
-    document.getElementById("navLinks").classList.remove("show-mobile");
+    const navLinks = document.getElementById("navLinks");
+    if (navLinks) navLinks.classList.remove("show-mobile");
 
     // Update active nav button
     document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
     if (pageId === "homePage") {
-        document.querySelector(".nav-btn:nth-child(1)").classList.add("active");
+        const b = document.getElementById("navHomeBtn");
+        if (b) b.classList.add("active");
         renderCourseCards();
         updateStatsOverview();
     } else if (pageId === "labPage") {
-        document.querySelector(".nav-btn:nth-child(2)").classList.add("active");
+        const b = document.getElementById("navLabBtn");
+        if (b) b.classList.add("active");
         changeLabLanguage();
     } else if (pageId === "quizPage") {
-        document.querySelector(".nav-btn:nth-child(3)").classList.add("active");
+        const b = document.getElementById("navQuizBtn");
+        if (b) b.classList.add("active");
         loadQuiz();
     } else if (pageId === "certificatePage") {
-        document.querySelector(".nav-btn:nth-child(4)").classList.add("active");
+        const b = document.getElementById("navCertBtn");
+        if (b) b.classList.add("active");
         populateCertLangDropdown();
         updateCertificatePreview();
+    } else if (pageId === "profilePage") {
+        const b = document.getElementById("navProfileBtn");
+        if (b) b.classList.add("active");
+        renderProfilePage();
     }
 
     window.scrollTo(0, 0);
@@ -1722,6 +1731,230 @@ function syncProgressToServer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: currentUser.email, progress: userProgress })
     }).catch(e => console.log("Progress saved locally."));
+}
+
+
+// ---------------------------------------------------------
+// STUDENT PROFILE & PROGRESS TRACKING
+// ---------------------------------------------------------
+function renderProfilePage() {
+    if (!currentUser) return;
+
+    // 1. Student Identity & Avatar Initials
+    const name = currentUser.name || "Student";
+    const email = currentUser.email || (name.toLowerCase().replace(/[^a-z0-9]/g, '') + "@student.codequest.edu");
+    const initials = name.trim().split(/\s+/).map(n => n[0]).slice(0, 2).join('').toUpperCase() || "S";
+
+    const avatarEl = document.getElementById("profileAvatar");
+    if (avatarEl) avatarEl.textContent = initials;
+
+    const nameEl = document.getElementById("profileStudentName");
+    if (nameEl) nameEl.textContent = name;
+
+    const emailEl = document.getElementById("profileStudentEmail");
+    if (emailEl) emailEl.textContent = email;
+
+    // 2. Metrics calculation
+    const courseKeys = Object.keys(courses);
+    let totalChaptersCompleted = 0;
+    let tracksDoneCount = 0;
+    let quizzesPassedCount = 0;
+    let certsEarnedCount = 0;
+
+    const totalPossibleChapters = courseKeys.reduce((acc, k) => acc + (courses[k].chapters ? courses[k].chapters.length : 8), 0);
+    const unlockedCerts = [];
+
+    courseKeys.forEach(k => {
+        const c = courses[k];
+        const done = getCompletedCount(k);
+        totalChaptersCompleted += done;
+        const totalChs = c.chapters ? c.chapters.length : 8;
+        
+        if (done >= totalChs) {
+            tracksDoneCount++;
+        }
+
+        const prog = userProgress[k];
+        const quizPassed = Boolean(prog && prog.testPassed);
+        if (quizPassed) {
+            quizzesPassedCount++;
+        }
+
+        if (isCourseEligibleForCert(k)) {
+            certsEarnedCount++;
+            unlockedCerts.push({
+                key: k,
+                name: c.name,
+                icon: c.icon,
+                completedChapters: done,
+                totalChapters: totalChs
+            });
+        }
+    });
+
+    const masteryPercent = Math.round((totalChaptersCompleted / totalPossibleChapters) * 100);
+
+    // Update KPI metrics
+    const mChapters = document.getElementById("profMetricChapters");
+    const mTracks = document.getElementById("profMetricTracks");
+    const mQuizzes = document.getElementById("profMetricQuizzes");
+    const mCerts = document.getElementById("profMetricCerts");
+
+    if (mChapters) mChapters.textContent = `${totalChaptersCompleted} / ${totalPossibleChapters}`;
+    if (mTracks) mTracks.textContent = `${tracksDoneCount} / ${courseKeys.length}`;
+    if (mQuizzes) mQuizzes.textContent = `${quizzesPassedCount} / ${courseKeys.length}`;
+    if (mCerts) mCerts.textContent = `${certsEarnedCount} / ${courseKeys.length}`;
+
+    // Mastery bar
+    const masteryBadge = document.getElementById("profMasteryPercent");
+    const masteryFill = document.getElementById("profMasteryFill");
+    if (masteryBadge) masteryBadge.textContent = `${masteryPercent}%`;
+    if (masteryFill) masteryFill.style.width = `${masteryPercent}%`;
+
+    // Rank Badge
+    const rankEl = document.getElementById("profileRankBadge");
+    if (rankEl) {
+        if (certsEarnedCount >= 5) {
+            rankEl.textContent = "🏆 Master Developer";
+        } else if (certsEarnedCount >= 1) {
+            rankEl.textContent = "🎓 Certified Developer";
+        } else if (totalChaptersCompleted >= 8) {
+            rankEl.textContent = "⭐ Coding Enthusiast";
+        } else {
+            rankEl.textContent = "🌱 Rising Learner";
+        }
+    }
+
+    // 3. Render Certificates Showcase
+    const certsContainer = document.getElementById("profileCertificatesList");
+    if (certsContainer) {
+        certsContainer.innerHTML = "";
+        if (unlockedCerts.length === 0) {
+            certsContainer.innerHTML = `
+                <div class="empty-certs-card">
+                    <div class="empty-certs-icon">📜</div>
+                    <h4>No Certificates Unlocked Yet</h4>
+                    <p>Complete all 8 chapters and score 6+/10 on the Knowledge Quiz in any course to unlock your official verified certificate!</p>
+                    <button class="btn primary-btn btn-sm" onclick="openCourse('python')">🚀 Start Learning Python</button>
+                </div>
+            `;
+        } else {
+            unlockedCerts.forEach(cert => {
+                const card = document.createElement("div");
+                card.className = "earned-cert-card";
+                card.innerHTML = `
+                    <div class="earned-cert-top">
+                        <div class="cert-gold-seal">★</div>
+                        <span class="cert-verified-pill">✓ Verified</span>
+                    </div>
+                    <div class="earned-cert-body">
+                        <div class="cert-track-icon">${cert.icon}</div>
+                        <h4>${cert.name} Specialist</h4>
+                        <p class="cert-recipient-name">Awarded to <strong>${name}</strong></p>
+                        <span class="cert-modules-done">8 / 8 Modules & Quiz Completed</span>
+                    </div>
+                    <div class="earned-cert-footer">
+                        <button class="btn primary-btn btn-sm btn-full" onclick="viewCourseCertificate('${cert.key}')">
+                            🎓 View & Print Certificate
+                        </button>
+                    </div>
+                `;
+                certsContainer.appendChild(card);
+            });
+        }
+    }
+
+    // 4. Render Track-by-Track Table
+    const tableWrap = document.getElementById("profileCourseProgressList");
+    if (tableWrap) {
+        tableWrap.innerHTML = "";
+        const table = document.createElement("table");
+        table.className = "profile-status-table";
+        table.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Programming Track</th>
+                    <th>Chapter Progress</th>
+                    <th>Quiz Status</th>
+                    <th>Certificate</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        const tbody = table.querySelector("tbody");
+
+        courseKeys.forEach(k => {
+            const c = courses[k];
+            const done = getCompletedCount(k);
+            const totalChs = c.chapters ? c.chapters.length : 8;
+            const pct = Math.round((done / totalChs) * 100);
+            const prog = userProgress[k] || { completed: [], testPassed: false };
+            const quizPassed = Boolean(prog.testPassed);
+            const certUnlocked = isCourseEligibleForCert(k);
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>
+                    <div class="course-name-cell">
+                        <span class="track-emoji">${c.icon}</span>
+                        <div>
+                            <strong>${c.name}</strong>
+                            <span class="cell-sub">${totalChs} Chapters</span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="table-progress-wrap">
+                        <div class="table-progress-bar">
+                            <div class="table-progress-fill" style="width: ${pct}%"></div>
+                        </div>
+                        <span class="table-progress-text">${done}/${totalChs} (${pct}%)</span>
+                    </div>
+                </td>
+                <td>
+                    ${quizPassed 
+                        ? '<span class="status-chip chip-passed">✓ Passed</span>' 
+                        : (done >= totalChs 
+                            ? '<span class="status-chip chip-ready">Ready to Take</span>' 
+                            : '<span class="status-chip chip-locked">Locked</span>')}
+                </td>
+                <td>
+                    ${certUnlocked 
+                        ? '<span class="status-chip chip-unlocked">🎓 Unlocked</span>' 
+                        : '<span class="status-chip chip-pending">⏳ In Progress</span>'}
+                </td>
+                <td>
+                    ${certUnlocked 
+                        ? `<button class="table-action-btn btn-cert" onclick="viewCourseCertificate('${k}')">View Cert 🎓</button>`
+                        : (done >= totalChs 
+                            ? `<button class="table-action-btn btn-quiz" onclick="openQuizForCourse('${k}')">Take Quiz 📝</button>`
+                            : `<button class="table-action-btn btn-learn" onclick="openCourse('${k}')">Learn →</button>`)}
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        tableWrap.appendChild(table);
+    }
+}
+
+function viewCourseCertificate(lang) {
+    showPage('certificatePage');
+    const sel = document.getElementById('certLangSelect');
+    if (sel) {
+        sel.value = lang;
+        updateCertificatePreview();
+    }
+}
+
+function openQuizForCourse(lang) {
+    const sel = document.getElementById('quizCourseSelect');
+    if (sel) {
+        sel.value = lang;
+        loadQuiz();
+    }
+    showPage('quizPage');
 }
 
 // ---------------------------------------------------------

@@ -28,17 +28,20 @@
         <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
 
         <nav id="navLinks" class="nav-links">
-            <button class="nav-btn active" onclick="showPage('homePage')">
+            <button id="navHomeBtn" class="nav-btn active" onclick="showPage('homePage')">
                 <span class="nav-btn-icon">🏠</span> Courses
             </button>
-            <button class="nav-btn" onclick="showPage('labPage')">
+            <button id="navLabBtn" class="nav-btn" onclick="showPage('labPage')">
                 <span class="nav-btn-icon">💻</span> Code Lab
             </button>
-            <button class="nav-btn" onclick="showPage('quizPage')">
+            <button id="navQuizBtn" class="nav-btn" onclick="showPage('quizPage')">
                 <span class="nav-btn-icon">📝</span> Quiz
             </button>
-            <button class="nav-btn" onclick="showPage('certificatePage')">
+            <button id="navCertBtn" class="nav-btn" onclick="showPage('certificatePage')">
                 <span class="nav-btn-icon">🎓</span> Certificate
+            </button>
+            <button id="navProfileBtn" class="nav-btn" onclick="showPage('profilePage')">
+                <span class="nav-btn-icon">👤</span> Profile
             </button>
 
             <!-- Nav Divider -->
@@ -46,7 +49,7 @@
 
             <!-- Student Profile Badge & Action Buttons -->
             <div class="nav-user-group">
-                <div id="navUserBadge" class="user-pill">
+                <div id="navUserBadge" class="user-pill clickable-pill" onclick="showPage('profilePage')" title="View My Profile & Progress">
                     <span class="user-status-dot"></span>
                     <span id="navUserName">Student</span>
                 </div>
@@ -449,6 +452,113 @@
                             <p id="certDate">October 2026</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ========================================================= -->
+    <!-- 7. STUDENT PROFILE & PROGRESS TRACKER PAGE -->
+    <!-- ========================================================= -->
+    <section id="profilePage" class="page hidden">
+        <div class="profile-container">
+            <!-- 1. HERO PROFILE CARD -->
+            <div class="profile-hero-card">
+                <div class="profile-hero-content">
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-circle" id="profileAvatar">S</div>
+                        <span class="avatar-badge-icon">🎓</span>
+                    </div>
+                    <div class="profile-identity">
+                        <div class="profile-name-row">
+                            <h2 id="profileStudentName">Student Learner</h2>
+                            <span class="profile-badge-pill" id="profileStudentRole">Verified Scholar</span>
+                        </div>
+                        <p class="profile-email-line" id="profileStudentEmail">student@codequest.edu</p>
+                        <div class="profile-meta-tags">
+                            <span class="meta-tag">🟢 Active Student</span>
+                            <span class="meta-tag" id="profileJoinDate">Member since 2026</span>
+                            <span class="meta-tag" id="profileRankBadge">🏅 Coding Enthusiast</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-hero-actions">
+                    <button class="btn secondary-btn" onclick="openResetModal()">🔄 Reset Progress</button>
+                    <button class="btn danger-outline-btn" onclick="logout()">🚪 Logout</button>
+                </div>
+            </div>
+
+            <!-- 2. HIGH-LEVEL KPI METRICS BAR -->
+            <div class="profile-metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-icon-wrap bg-blue">📚</div>
+                    <div class="metric-data">
+                        <span class="metric-number" id="profMetricChapters">0 / 72</span>
+                        <span class="metric-label">Chapters Mastered</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon-wrap bg-indigo">🚀</div>
+                    <div class="metric-data">
+                        <span class="metric-number" id="profMetricTracks">0 / 9</span>
+                        <span class="metric-label">Tracks Completed</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon-wrap bg-emerald">📝</div>
+                    <div class="metric-data">
+                        <span class="metric-number" id="profMetricQuizzes">0 / 9</span>
+                        <span class="metric-label">Quizzes Passed</span>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon-wrap bg-amber">🎓</div>
+                    <div class="metric-data">
+                        <span class="metric-number" id="profMetricCerts">0 / 9</span>
+                        <span class="metric-label">Certificates Earned</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. OVERALL CURRICULUM MASTERY BAR -->
+            <div class="profile-mastery-card">
+                <div class="mastery-header">
+                    <div>
+                        <h3>Overall Curriculum Mastery</h3>
+                        <p>Track your real-time learning journey across all 9 programming tracks</p>
+                    </div>
+                    <div class="mastery-score-badge" id="profMasteryPercent">0%</div>
+                </div>
+                <div class="mastery-progress-bar-bg">
+                    <div class="mastery-progress-bar-fill" id="profMasteryFill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- 4. MY EARNED CERTIFICATES SHOWCASE -->
+            <div class="profile-section-block">
+                <div class="section-heading-row">
+                    <div class="heading-title-group">
+                        <h3>🎓 My Earned Certificates</h3>
+                        <p>Official verified certificates of completion you have unlocked</p>
+                    </div>
+                    <button class="btn secondary-btn btn-sm" onclick="showPage('certificatePage')">Certificate Hub →</button>
+                </div>
+                
+                <div id="profileCertificatesList" class="profile-certs-grid">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- 5. TRACK-BY-TRACK DETAILED PROGRESS BREAKDOWN -->
+            <div class="profile-section-block">
+                <div class="section-heading-row">
+                    <div class="heading-title-group">
+                        <h3>📊 Course-by-Course Learning Status</h3>
+                        <p>Review completed chapters, test status, and jump directly into any track</p>
+                    </div>
+                </div>
+                
+                <div id="profileCourseProgressList" class="profile-courses-table-wrap">
+                    <!-- Dynamically populated table -->
                 </div>
             </div>
         </div>
