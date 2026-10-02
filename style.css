@@ -2496,3 +2496,414 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ---------------------------------------------------------
+   HOME PAGE / WELCOME & ORIENTATION STYLES
+   --------------------------------------------------------- */
+.home-container {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* Hero Welcome Card */
+.home-hero-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 38px 36px;
+    box-shadow: 0 6px 24px -2px rgba(67, 97, 238, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-hero-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4361ee, #3a86ff, #06d6a0);
+}
+
+.home-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #eef2ff;
+    color: #4361ee;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #c7d2fe;
+    margin-bottom: 16px;
+}
+
+.badge-dot {
+    width: 7px;
+    height: 7px;
+    background: #4361ee;
+    border-radius: 50%;
+}
+
+.home-hero-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--dark);
+    margin: 0 0 12px 0;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+}
+
+.home-hero-subtitle {
+    font-size: 15px;
+    color: #475569;
+    line-height: 1.6;
+    max-width: 820px;
+    margin: 0 0 24px 0;
+}
+
+.home-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn-lg {
+    padding: 11px 22px;
+    font-size: 14.5px;
+    font-weight: 700;
+    border-radius: 8px;
+}
+
+/* Stats Strip */
+.home-stats-strip {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.home-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.home-stat-icon {
+    font-size: 26px;
+}
+
+.home-stat-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.home-stat-item strong {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1.2;
+}
+
+.home-stat-item span {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.home-stat-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--border);
+}
+
+/* Home Section Block */
+.home-section-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.home-block-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.home-block-tag {
+    font-size: 11px;
+    font-weight: 800;
+    color: #4361ee;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.home-block-header h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--dark);
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+.home-block-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.home-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+}
+
+/* 4-Step Roadmap Cards */
+.roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.roadmap-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.roadmap-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.roadmap-step-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #4361ee;
+    background: #eef2ff;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.roadmap-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 14px;
+}
+
+.roadmap-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 0 0 8px 0;
+}
+
+.roadmap-card p {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0 0 14px 0;
+    flex: 1;
+}
+
+.roadmap-tip {
+    font-size: 11px;
+    font-weight: 600;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    width: fit-content;
+}
+
+/* Featured Tracks */
+.featured-tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.featured-track-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.featured-track-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(67, 97, 238, 0.08);
+    border-color: #cbd5e1;
+}
+
+.featured-track-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.featured-track-icon {
+    font-size: 32px;
+}
+
+.featured-track-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: #4361ee;
+    background: #eef2ff;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.featured-track-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 0 0 8px 0;
+}
+
+.featured-track-card p {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+    flex: 1;
+}
+
+.featured-track-meta {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+/* Platform Features Card */
+.home-features-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.features-intro {
+    margin-bottom: 24px;
+}
+
+.features-intro h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--dark);
+    margin: 4px 0 6px 0;
+}
+
+.features-intro p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.features-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.feature-icon {
+    font-size: 24px;
+    background: #ffffff;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.feature-item h4 {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 0 0 4px 0;
+}
+
+.feature-item p {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.5;
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .roadmap-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .featured-tracks-grid {
+        grid-template-columns: 1fr;
+    }
+    .features-list-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .home-hero-card {
+        padding: 24px 20px;
+    }
+    .home-hero-title {
+        font-size: 24px;
+    }
+    .home-stats-strip {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+    .home-stat-divider {
+        display: none;
+    }
+    .roadmap-grid {
+        grid-template-columns: 1fr;
+    }
+}

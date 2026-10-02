@@ -1058,7 +1058,7 @@ function showToast(message) {
 // 7. NAVIGATION & PAGE SWITCHING
 // ---------------------------------------------------------
 function showPage(pageId) {
-    const pages = ["authPage", "homePage", "chapterPage", "labPage", "quizPage", "certificatePage", "profilePage"];
+    const pages = ["authPage", "homePage", "coursesPage", "chapterPage", "labPage", "quizPage", "certificatePage", "profilePage"];
     pages.forEach(p => {
         const el = document.getElementById(p);
         if (el) el.classList.add("hidden");
@@ -1075,6 +1075,10 @@ function showPage(pageId) {
     document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
     if (pageId === "homePage") {
         const b = document.getElementById("navHomeBtn");
+        if (b) b.classList.add("active");
+        renderHomePage();
+    } else if (pageId === "coursesPage") {
+        const b = document.getElementById("navCoursesBtn");
         if (b) b.classList.add("active");
         renderCourseCards();
         updateStatsOverview();
@@ -1160,6 +1164,46 @@ function filterCourses(category) {
     });
     event.target.classList.add("active");
     renderCourseCards();
+}
+
+
+// ---------------------------------------------------------
+// HOME / OVERVIEW HUB RENDERING
+// ---------------------------------------------------------
+function renderHomePage() {
+    if (currentUser) {
+        const nameEl = document.getElementById("homeStudentName");
+        if (nameEl) nameEl.textContent = currentUser.name;
+    }
+
+    const courseKeys = Object.keys(courses);
+    let totalCompleted = 0;
+    let tracksDoneCount = 0;
+    let quizzesPassedCount = 0;
+    let certCount = 0;
+
+    const totalChapters = courseKeys.reduce((acc, k) => acc + (courses[k].chapters ? courses[k].chapters.length : 8), 0);
+
+    courseKeys.forEach(k => {
+        const done = getCompletedCount(k);
+        totalCompleted += done;
+        const totalChs = courses[k].chapters ? courses[k].chapters.length : 8;
+        if (done >= totalChs) tracksDoneCount++;
+        
+        const prog = userProgress[k];
+        if (prog && prog.testPassed) quizzesPassedCount++;
+        if (isCourseEligibleForCert(k)) certCount++;
+    });
+
+    const elChapters = document.getElementById("homeStatChapters");
+    const elTracks = document.getElementById("homeStatTracks");
+    const elQuizzes = document.getElementById("homeStatQuizzes");
+    const elCerts = document.getElementById("homeStatCerts");
+
+    if (elChapters) elChapters.textContent = `${totalCompleted} / ${totalChapters}`;
+    if (elTracks) elTracks.textContent = `${tracksDoneCount} / ${courseKeys.length}`;
+    if (elQuizzes) elQuizzes.textContent = `${quizzesPassedCount} / ${courseKeys.length}`;
+    if (elCerts) elCerts.textContent = `${certCount} / ${courseKeys.length}`;
 }
 
 function renderCourseCards() {

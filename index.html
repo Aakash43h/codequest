@@ -29,7 +29,10 @@
 
         <nav id="navLinks" class="nav-links">
             <button id="navHomeBtn" class="nav-btn active" onclick="showPage('homePage')">
-                <span class="nav-btn-icon">🏠</span> Courses
+                <span class="nav-btn-icon">🏠</span> Home
+            </button>
+            <button id="navCoursesBtn" class="nav-btn" onclick="showPage('coursesPage')">
+                <span class="nav-btn-icon">📚</span> Courses
             </button>
             <button id="navLabBtn" class="nav-btn" onclick="showPage('labPage')">
                 <span class="nav-btn-icon">💻</span> Code Lab
@@ -150,9 +153,214 @@
     </section>
 
     <!-- ========================================================= -->
-    <!-- 2. HOME / COURSES DASHBOARD                               -->
+    <!-- 2. HOME / WELCOME & ORIENTATION HUB                       -->
     <!-- ========================================================= -->
     <section id="homePage" class="page hidden">
+        <div class="home-container">
+            <!-- HERO WELCOME BANNER -->
+            <div class="home-hero-card">
+                <div class="home-hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>🚀 Coding Awareness Platform for College Students</span>
+                </div>
+                <h1 class="home-hero-title">
+                    Welcome to CodeQuest, <span id="homeStudentName">Student</span>! 👋
+                </h1>
+                <p class="home-hero-subtitle">
+                    Your interactive gateway to learning programming. Learn in-demand coding languages chapter-by-chapter, write & run live code directly in your browser, test your skills, and earn certified course credentials for your career.
+                </p>
+                <div class="home-hero-actions">
+                    <button class="btn primary-btn btn-lg" onclick="showPage('coursesPage')">
+                        🚀 Explore 9 Courses
+                    </button>
+                    <button class="btn secondary-btn btn-lg" onclick="showPage('labPage')">
+                        💻 Open Code Lab
+                    </button>
+                    <button class="btn secondary-btn btn-lg" onclick="showPage('profilePage')">
+                        👤 My Profile & Certs
+                    </button>
+                </div>
+            </div>
+
+            <!-- QUICK PROGRESS STATS RIBBON (FOR LOGGED-IN STUDENT) -->
+            <div class="home-stats-strip">
+                <div class="home-stat-item">
+                    <span class="home-stat-icon">📚</span>
+                    <div>
+                        <strong id="homeStatChapters">0 / 72</strong>
+                        <span>Modules Mastered</span>
+                    </div>
+                </div>
+                <div class="home-stat-divider"></div>
+                <div class="home-stat-item">
+                    <span class="home-stat-icon">⚡</span>
+                    <div>
+                        <strong id="homeStatTracks">0 / 9</strong>
+                        <span>Tracks Completed</span>
+                    </div>
+                </div>
+                <div class="home-stat-divider"></div>
+                <div class="home-stat-item">
+                    <span class="home-stat-icon">📝</span>
+                    <div>
+                        <strong id="homeStatQuizzes">0 / 9</strong>
+                        <span>Quizzes Passed</span>
+                    </div>
+                </div>
+                <div class="home-stat-divider"></div>
+                <div class="home-stat-item">
+                    <span class="home-stat-icon">🎓</span>
+                    <div>
+                        <strong id="homeStatCerts">0 / 9</strong>
+                        <span>Certificates Unlocked</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOW STUDENTS LEARN & GET CERTIFICATES (THE 4-STEP ROADMAP) -->
+            <div class="home-section-block">
+                <div class="home-block-header">
+                    <span class="home-block-tag">HOW IT WORKS</span>
+                    <h2>Your Path from Beginner to Certified Developer</h2>
+                    <p>CodeQuest simplifies coding into a streamlined, rewarding 4-step journey designed for academic and placement success.</p>
+                </div>
+
+                <div class="roadmap-grid">
+                    <div class="roadmap-card">
+                        <div class="roadmap-step-badge">Step 1</div>
+                        <div class="roadmap-icon bg-blue">📚</div>
+                        <h3>Choose Your Track</h3>
+                        <p>Pick from 9 industry-standard programming languages: Python, Java, C, C++, C#, JavaScript, HTML & CSS, SQL, and PHP.</p>
+                        <span class="roadmap-tip">Beginner friendly & structured</span>
+                    </div>
+
+                    <div class="roadmap-card">
+                        <div class="roadmap-step-badge">Step 2</div>
+                        <div class="roadmap-icon bg-indigo">💻</div>
+                        <h3>Interactive Chapters & Code Lab</h3>
+                        <p>Learn core concepts in 8 concise chapters per track. Run code in the live editor, solve Quick Challenges, and use "Show Ans" if stuck.</p>
+                        <span class="roadmap-tip">Instant browser execution</span>
+                    </div>
+
+                    <div class="roadmap-card">
+                        <div class="roadmap-step-badge">Step 3</div>
+                        <div class="roadmap-icon bg-emerald">📝</div>
+                        <h3>Pass the Knowledge Quiz</h3>
+                        <p>Test your understanding with a comprehensive 10-question multiple choice quiz. Score 6+/10 to validate your mastery.</p>
+                        <span class="roadmap-tip">Real-time instant scoring</span>
+                    </div>
+
+                    <div class="roadmap-card">
+                        <div class="roadmap-step-badge">Step 4</div>
+                        <div class="roadmap-icon bg-amber">🎓</div>
+                        <h3>Earn Verified Certificate</h3>
+                        <p>Complete all 8 chapters & pass the quiz to unlock an official, authenticated Certificate of Completion ready for printing or resume sharing.</p>
+                        <span class="roadmap-tip">Download / Print as PDF</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POPULAR STARTING TRACKS (FAST START) -->
+            <div class="home-section-block">
+                <div class="home-block-header">
+                    <div class="home-title-row">
+                        <div>
+                            <span class="home-block-tag">RECOMMENDED</span>
+                            <h2>Popular Starting Tracks</h2>
+                            <p>Not sure where to begin? Start with these high-impact beginner tracks:</p>
+                        </div>
+                        <button class="btn secondary-btn" onclick="showPage('coursesPage')">View All 9 Courses →</button>
+                    </div>
+                </div>
+
+                <div class="featured-tracks-grid">
+                    <div class="featured-track-card" onclick="openCourse('python')">
+                        <div class="featured-track-header">
+                            <span class="featured-track-icon">🐍</span>
+                            <span class="featured-track-tag">Most Popular</span>
+                        </div>
+                        <h3>Python Programming</h3>
+                        <p>The #1 language for beginners, data science, AI, and backend development. Clean, intuitive syntax.</p>
+                        <div class="featured-track-meta">
+                            <span>8 Chapters</span> • <span>Knowledge Quiz</span> • <span>Certificate</span>
+                        </div>
+                        <button class="btn primary-btn btn-sm btn-full">Start Python Track →</button>
+                    </div>
+
+                    <div class="featured-track-card" onclick="openCourse('html')">
+                        <div class="featured-track-header">
+                            <span class="featured-track-icon">🌐</span>
+                            <span class="featured-track-tag">Web Basics</span>
+                        </div>
+                        <h3>HTML & CSS Web Development</h3>
+                        <p>Learn how websites are created with real-time visual previews. Build layouts, typography, and responsive forms.</p>
+                        <div class="featured-track-meta">
+                            <span>8 Chapters</span> • <span>Knowledge Quiz</span> • <span>Certificate</span>
+                        </div>
+                        <button class="btn primary-btn btn-sm btn-full">Start Web Track →</button>
+                    </div>
+
+                    <div class="featured-track-card" onclick="openCourse('javascript')">
+                        <div class="featured-track-header">
+                            <span class="featured-track-icon">⚡</span>
+                            <span class="featured-track-tag">Essential</span>
+                        </div>
+                        <h3>JavaScript Interactive</h3>
+                        <p>The core programming language of the modern web. Add interactivity, logic, events, and dynamic behavior.</p>
+                        <div class="featured-track-meta">
+                            <span>8 Chapters</span> • <span>Knowledge Quiz</span> • <span>Certificate</span>
+                        </div>
+                        <button class="btn primary-btn btn-sm btn-full">Start JavaScript Track →</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KEY PLATFORM ADVANTAGES -->
+            <div class="home-features-card">
+                <div class="features-intro">
+                    <span class="home-block-tag">WHY CODEQUEST</span>
+                    <h2>Built for Student Learning Success</h2>
+                    <p>Everything college learners need to build real programming confidence without frustrating setups.</p>
+                </div>
+
+                <div class="features-list-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">⚡</div>
+                        <div>
+                            <h4>Zero Setup Required</h4>
+                            <p>Write and run Python, C, C++, Java, JS, HTML, and SQL in your browser without downloading heavy software.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <div>
+                            <h4>Quick Challenges with "Show Ans"</h4>
+                            <p>Every chapter features a targeted coding challenge. If you ever get stuck, use "Show Ans" to learn and pass immediately.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔄</div>
+                        <div>
+                            <h4>Unlimited Practice with Reset</h4>
+                            <p>After finishing a course, reset your progress anytime to practice lessons, challenges, and quizzes as many times as you like.</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div>
+                            <h4>Real-Time Progress & Profile</h4>
+                            <p>Track your modules, quiz scores, and unlocked certificates with your personal student profile and learning analytics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 2B. COURSES CATALOG & DASHBOARD                           -->
+    <!-- ========================================================= -->
+    <section id="coursesPage" class="page hidden">
         <div class="welcome-banner">
             <h2>Welcome to CodeQuest, <span id="welcomeStudentName">Student</span>! 👋</h2>
             <p>Select a programming course below. Learn chapter-by-chapter, run live code, solve challenges, test your knowledge, and earn your certificate.</p>
@@ -204,7 +412,7 @@
     <section id="chapterPage" class="page hidden">
         <div class="course-header">
             <div>
-                <button class="back-link" onclick="showPage('homePage')">← Back to Courses</button>
+                <button class="back-link" onclick="showPage('coursesPage')">← Back to Courses</button>
                 <h2 id="activeCourseTitle">Python Course</h2>
             </div>
             <div class="course-header-actions">
@@ -289,7 +497,7 @@
 
         <!-- Bottom Action Bar -->
         <div class="lesson-bottom-bar">
-            <button class="btn secondary-btn" onclick="showPage('homePage')">All Courses</button>
+            <button class="btn secondary-btn" onclick="showPage('coursesPage')">All Courses</button>
             <button id="nextChapterBtn" class="btn primary-btn" onclick="goToNextChapter()">Next Chapter →</button>
         </div>
     </section>
