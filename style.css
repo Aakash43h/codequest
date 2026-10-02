@@ -160,24 +160,189 @@ body {
 
 /* ---------------------------------------------------------
    1. AUTH PORTAL (LOGIN & SIGN UP - FIRST PAGE)
-   Clean, Classic Centered Card as it was before
+   Classic Centered Card with Modern Decorative Tech Background
    --------------------------------------------------------- */
 .auth-section {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 75vh;
-    padding: 20px 0;
+    min-height: calc(100vh - 120px);
+    padding: 40px 20px;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 30%, #ffffff 0%, #f1f5f9 100%);
 }
 
+/* Background Decorations Container */
+.auth-bg-decorations {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Crisp Developer Grid Pattern */
+.tech-grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(67, 97, 238, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(67, 97, 238, 0.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0) 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0) 80%);
+}
+
+/* Ambient Glowing Orbs */
+.ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+}
+
+.orb-primary {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #4361ee 0%, #8338ec 70%);
+    top: 8%;
+    left: 12%;
+    animation: floatOrb1 14s ease-in-out infinite alternate;
+}
+
+.orb-teal {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, #2ec4b6 0%, #3a86ff 70%);
+    bottom: 8%;
+    right: 12%;
+    animation: floatOrb2 16s ease-in-out infinite alternate;
+}
+
+.orb-amber {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, #ffb703 0%, #ff7759 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.35;
+    animation: floatOrb3 12s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, 30px) scale(1.08); }
+    100% { transform: translate(-30px, 50px) scale(0.95); }
+}
+
+@keyframes floatOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-50px, -40px) scale(1.12); }
+    100% { transform: translate(30px, -30px) scale(0.92); }
+}
+
+@keyframes floatOrb3 {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-40%, -60%) scale(1.18); }
+    100% { transform: translate(-60%, -40%) scale(0.92); }
+}
+
+/* Floating Code Badges */
+.code-badge {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    padding: 8px 16px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 4px 10px rgba(67, 97, 238, 0.05);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    white-space: nowrap;
+    transition: transform 0.3s ease;
+}
+
+.code-badge .badge-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.code-badge .badge-text {
+    color: #334155;
+}
+
+/* Badge Positioning & Float Animations */
+.badge-1 {
+    top: 14%;
+    left: 8%;
+    animation: badgeFloat 6s ease-in-out infinite;
+}
+
+.badge-2 {
+    top: 18%;
+    right: 8%;
+    animation: badgeFloat 7s ease-in-out infinite 1s;
+}
+
+.badge-3 {
+    top: 48%;
+    left: 5%;
+    animation: badgeFloat 6.5s ease-in-out infinite 0.5s;
+}
+
+.badge-4 {
+    top: 52%;
+    right: 5%;
+    animation: badgeFloat 7.5s ease-in-out infinite 1.5s;
+}
+
+.badge-5 {
+    bottom: 12%;
+    left: 10%;
+    animation: badgeFloat 6s ease-in-out infinite 2s;
+}
+
+.badge-6 {
+    bottom: 14%;
+    right: 10%;
+    animation: badgeFloat 8s ease-in-out infinite 0.8s;
+}
+
+@keyframes badgeFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Enhanced Auth Card with Glassmorphic polish */
 .auth-card {
-    background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 35px 30px;
+    position: relative;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    padding: 38px 32px;
     width: 100%;
-    max-width: 420px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+    max-width: 430px;
+    box-shadow: 
+        0 20px 45px -10px rgba(67, 97, 238, 0.14),
+        0 10px 25px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(226, 232, 240, 0.8);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .auth-header {
@@ -185,8 +350,21 @@ body {
     margin-bottom: 24px;
 }
 
+.auth-logo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    border: 1px solid #c7d2fe;
+    border-radius: 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 16px -4px rgba(67, 97, 238, 0.18);
+}
+
 .auth-logo-icon {
-    font-size: 40px;
+    font-size: 32px;
 }
 
 .auth-header h2 {
@@ -1059,6 +1237,37 @@ body {
     .section-title-row {
         flex-direction: column;
         align-items: flex-start;
+    }
+}
+
+@media (max-width: 1024px) {
+    .badge-3, .badge-4 {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .code-badge {
+        display: none;
+    }
+    .auth-section {
+        min-height: 85vh;
+        padding: 30px 16px;
+    }
+    .auth-card {
+        padding: 30px 22px;
+    }
+    .orb-primary {
+        width: 250px;
+        height: 250px;
+        top: 5%;
+        left: 5%;
+    }
+    .orb-teal {
+        width: 220px;
+        height: 220px;
+        bottom: 5%;
+        right: 5%;
     }
 }
 
