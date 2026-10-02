@@ -965,9 +965,93 @@ function logout() {
 
 function updateNavBadge() {
     if (currentUser) {
-        document.getElementById("navUserBadge").textContent = "👋 " + currentUser.name;
-        document.getElementById("welcomeStudentName").textContent = currentUser.name;
+        const userNameEl = document.getElementById("navUserName");
+        if (userNameEl) {
+            userNameEl.textContent = currentUser.name;
+        } else {
+            const badge = document.getElementById("navUserBadge");
+            if (badge) badge.textContent = "👋 " + currentUser.name;
+        }
+        const welcomeName = document.getElementById("welcomeStudentName");
+        if (welcomeName) welcomeName.textContent = currentUser.name;
     }
+}
+
+// ---------------------------------------------------------
+// RESET PROGRESS MODAL & LOGIC
+// ---------------------------------------------------------
+function openResetModal() {
+    const modal = document.getElementById("resetModal");
+    if (!modal) return;
+    const courseName = courses[currentLanguage] ? courses[currentLanguage].name : "Current Course";
+    const nameEl = document.getElementById("modalCurrentCourseName");
+    if (nameEl) nameEl.textContent = courseName;
+    modal.classList.remove("hidden");
+}
+
+function closeResetModal() {
+    const modal = document.getElementById("resetModal");
+    if (modal) modal.classList.add("hidden");
+}
+
+function resetCurrentCourseProgress() {
+    const lang = currentLanguage;
+    const cName = courses[lang] ? courses[lang].name : lang;
+
+    userProgress[lang] = { completed: [], testPassed: false };
+    localStorage.setItem("cq_progress", JSON.stringify(userProgress));
+    syncProgressToServer();
+    updateStatsOverview();
+    renderCourseCards();
+
+    closeResetModal();
+
+    if (document.getElementById("chapterPage") && !document.getElementById("chapterPage").classList.contains("hidden")) {
+        loadChapter(0);
+    }
+    if (document.getElementById("certificatePage") && !document.getElementById("certificatePage").classList.contains("hidden")) {
+        updateCertificatePreview();
+    }
+
+    showToast(`🔄 Progress for ${cName} has been reset! You can now practice from Chapter 1.`);
+}
+
+function confirmResetAllProgress() {
+    if (!confirm("Are you sure you want to reset all progress across all 9 tracks? This will reset all chapters, quiz scores, and locked certificates so you can practice everything from scratch.")) {
+        return;
+    }
+
+    userProgress = {};
+    localStorage.setItem("cq_progress", JSON.stringify(userProgress));
+    syncProgressToServer();
+    updateStatsOverview();
+    renderCourseCards();
+
+    closeResetModal();
+
+    if (document.getElementById("chapterPage") && !document.getElementById("chapterPage").classList.contains("hidden")) {
+        loadChapter(0);
+    }
+    if (document.getElementById("certificatePage") && !document.getElementById("certificatePage").classList.contains("hidden")) {
+        updateCertificatePreview();
+    }
+
+    showToast("🎉 All progress has been reset! All 9 tracks are fresh and ready for practice.");
+}
+
+function showToast(message) {
+    let toast = document.getElementById("cqToast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "cqToast";
+        toast.className = "cq-toast";
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3500);
 }
 
 // ---------------------------------------------------------

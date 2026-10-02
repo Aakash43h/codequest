@@ -12,10 +12,15 @@
 <header id="mainHeader" class="site-header hidden">
     <div class="nav-container">
         <div class="logo" onclick="showPage('homePage')">
-            <span class="logo-icon">🚀</span>
+            <div class="logo-badge">
+                <span class="logo-icon">🚀</span>
+            </div>
             <div class="logo-text">
-                <h1>CodeQuest</h1>
-                <span class="logo-sub">Coding Awareness for College Students</span>
+                <div class="logo-title-row">
+                    <h1>CodeQuest</h1>
+                    <span class="logo-tag">Portal</span>
+                </div>
+                <span class="logo-sub">Coding Awareness Platform</span>
             </div>
         </div>
 
@@ -23,12 +28,35 @@
         <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
 
         <nav id="navLinks" class="nav-links">
-            <button class="nav-btn active" onclick="showPage('homePage')">🏠 Courses</button>
-            <button class="nav-btn" onclick="showPage('labPage')">💻 Code Lab</button>
-            <button class="nav-btn" onclick="showPage('quizPage')">📝 Quiz</button>
-            <button class="nav-btn" onclick="showPage('certificatePage')">🎓 Certificate</button>
-            <span id="navUserBadge" class="user-pill"></span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+            <button class="nav-btn active" onclick="showPage('homePage')">
+                <span class="nav-btn-icon">🏠</span> Courses
+            </button>
+            <button class="nav-btn" onclick="showPage('labPage')">
+                <span class="nav-btn-icon">💻</span> Code Lab
+            </button>
+            <button class="nav-btn" onclick="showPage('quizPage')">
+                <span class="nav-btn-icon">📝</span> Quiz
+            </button>
+            <button class="nav-btn" onclick="showPage('certificatePage')">
+                <span class="nav-btn-icon">🎓</span> Certificate
+            </button>
+
+            <!-- Nav Divider -->
+            <div class="nav-divider"></div>
+
+            <!-- Student Profile Badge & Action Buttons -->
+            <div class="nav-user-group">
+                <div id="navUserBadge" class="user-pill">
+                    <span class="user-status-dot"></span>
+                    <span id="navUserName">Student</span>
+                </div>
+                <button class="nav-action-btn reset-btn" onclick="openResetModal()" title="Reset progress to practice again">
+                    <span class="action-icon">🔄</span> Reset
+                </button>
+                <button class="nav-action-btn logout-btn" onclick="logout()" title="Log out of CodeQuest">
+                    <span class="action-icon">🚪</span> Logout
+                </button>
+            </div>
         </nav>
     </div>
 </header>
@@ -176,7 +204,10 @@
                 <button class="back-link" onclick="showPage('homePage')">← Back to Courses</button>
                 <h2 id="activeCourseTitle">Python Course</h2>
             </div>
-            <div class="chapter-indicator" id="chapterCountIndicator">Chapter 1 of 7</div>
+            <div class="course-header-actions">
+                <button class="btn-reset-course" onclick="resetCurrentCourseProgress()" title="Reset progress for this track so you can practice again">🔄 Reset Track</button>
+                <div class="chapter-indicator" id="chapterCountIndicator">Chapter 1 of 8</div>
+            </div>
         </div>
 
         <!-- Chapter Tabs (1 to 7) -->
@@ -420,6 +451,32 @@
 
 <!-- CELEBRATION CONFETTI CANVAS -->
 <canvas id="confettiCanvas"></canvas>
+
+<!-- RESET PROGRESS CONFIRMATION MODAL -->
+<div id="resetModal" class="modal-overlay hidden" onclick="if(event.target === this) closeResetModal()">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-icon-badge">🔄</div>
+            <h3>Reset Progress</h3>
+            <button class="modal-close" onclick="closeResetModal()">✕</button>
+        </div>
+        <p class="modal-desc">
+            Finished your lessons or want to re-take tests? You can reset your progress anytime to practice all chapters, challenges, and quizzes again.
+        </p>
+
+        <div class="modal-actions">
+            <button class="btn secondary-btn btn-full" onclick="resetCurrentCourseProgress()">
+                🔄 Reset Current Track (<span id="modalCurrentCourseName">Python</span>)
+            </button>
+            <button class="btn danger-outline-btn btn-full" onclick="confirmResetAllProgress()">
+                ⚠️ Reset All 9 Tracks (Start Over)
+            </button>
+            <button class="btn text-btn btn-full" onclick="closeResetModal()">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
