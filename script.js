@@ -1573,28 +1573,38 @@ async function runLabCode() {
 // ---------------------------------------------------------
 function loadQuiz() {
     const lang = document.getElementById("quizCourseSelect").value;
-    const list = document.getElementById("quizQuestionsList");
     const questions = quizzes[lang] || [];
+    const list = document.getElementById("quizQuestionsList");
+    const resultMsg = document.getElementById("quizResultMsg");
+    if (resultMsg) {
+        resultMsg.innerHTML = "";
+        resultMsg.className = "quiz-result";
+    }
 
-    document.getElementById("quizResultMsg").textContent = "";
     list.innerHTML = "";
 
     questions.forEach((q, idx) => {
         let opts = "";
         q.opts.forEach((opt, optIdx) => {
             opts += `
-                <label class="quiz-option">
+                <label class="quiz-option" id="quiz_opt_${idx}_${optIdx}">
                     <input type="radio" name="quiz_q_${idx}" value="${optIdx}">
-                    <span>${opt}</span>
+                    <span class="quiz-opt-text">${opt}</span>
                 </label>
             `;
         });
 
         const item = document.createElement("div");
         item.className = "quiz-item";
+        item.id = `quiz_item_${idx}`;
         item.innerHTML = `
-            <h4>${q.q}</h4>
+            <div class="quiz-item-header">
+                <span class="quiz-q-num">Q${idx + 1}</span>
+                <h4>${q.q}</h4>
+                <span class="quiz-status-badge" id="quiz_badge_${idx}"></span>
+            </div>
             <div class="quiz-options-group">${opts}</div>
+            <div class="quiz-feedback-box hidden" id="quiz_fb_${idx}"></div>
         `;
         list.appendChild(item);
     });
@@ -1604,24 +1614,112 @@ function submitQuiz() {
     const lang = document.getElementById("quizCourseSelect").value;
     const questions = quizzes[lang] || [];
     let score = 0;
+    const unAnswered = [];
 
+    // 1. Verify all questions are answered
     for (let i = 0; i < questions.length; i++) {
         const checked = document.querySelector(`input[name="quiz_q_${i}"]:checked`);
         if (!checked) {
-            alert(`Please answer Question ${i + 1} before submitting.`);
-            return;
-        }
-        if (parseInt(checked.value) === questions[i].ans) {
-            score++;
+            unAnswered.push(i + 1);
         }
     }
 
-    const msg = document.getElementById("quizResultMsg");
+    if (unAnswered.length > 0) {
+        alert(`Please answer all questions before submitting. Unanswered: Question ${unAnswered.join(", ")}`);
+        const firstUnansweredEl = document.getElementById(`quiz_item_${unAnswered[0] - 1}`);
+        if (firstUnansweredEl) {
+            firstUnansweredEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            firstUnansweredEl.classList.add("item-highlight");
+            setTimeout(() => firstUnansweredEl.classList.remove("item-highlight"), 1500);
+        }
+        return;
+    }
 
-    // Passing threshold: 6 out of 10 (60% passing mark)
+    let firstWrongIndex = -1;
+
+    // 2. Grade and visually mark each question
+    for (let i = 0; i < questions.length; i++) {
+        const checked = document.querySelector(`input[name="quiz_q_${i}"]:checked`);
+        const userAns = parseInt(checked.value);
+        const correctAns = questions[i].ans;
+        const itemEl = document.getElementById(`quiz_item_${i}`);
+        const badgeEl = document.getElementById(`quiz_badge_${i}`);
+        const fbEl = document.getElementById(`quiz_fb_${i}`);
+
+        // Reset all option classes for this question
+        for (let o = 0; o < questions[i].opts.length; o++) {
+            const optLabel = document.getElementById(`quiz_opt_${i}_${o}`);
+            if (optLabel) {
+                optLabel.classList.remove("option-correct", "option-user-wrong", "option-reveal-correct");
+            }
+        }
+
+        if (userAns === correctAns) {
+            score++;
+            if (itemEl) {
+                itemEl.classList.remove("item-incorrect");
+                itemEl.classList.add("item-correct");
+            }
+            if (badgeEl) {
+                badgeEl.textContent = "✓ Correct (+1)";
+                badgeEl.className = "quiz-status-badge badge-correct";
+            }
+            const correctOptLabel = document.getElementById(`quiz_opt_${i}_${userAns}`);
+            if (correctOptLabel) {
+                correctOptLabel.classList.add("option-correct");
+            }
+            if (fbEl) {
+                fbEl.innerHTML = `<span>✅ <strong>Correct!</strong> Great job.</span>`;
+                fbEl.className = "quiz-feedback-box fb-correct";
+                fbEl.classList.remove("hidden");
+            }
+        } else {
+            if (firstWrongIndex === -1) firstWrongIndex = i;
+
+            if (itemEl) {
+                itemEl.classList.remove("item-correct");
+                itemEl.classList.add("item-incorrect");
+            }
+            if (badgeEl) {
+                badgeEl.textContent = "✗ Wrong";
+                badgeEl.className = "quiz-status-badge badge-wrong";
+            }
+
+            // Highlight the user's selected wrong option
+            const wrongOptLabel = document.getElementById(`quiz_opt_${i}_${userAns}`);
+            if (wrongOptLabel) {
+                wrongOptLabel.classList.add("option-user-wrong");
+            }
+
+            // Highlight the actual correct option in green
+            const rightOptLabel = document.getElementById(`quiz_opt_${i}_${correctAns}`);
+            if (rightOptLabel) {
+                rightOptLabel.classList.add("option-reveal-correct");
+            }
+
+            if (fbEl) {
+                fbEl.innerHTML = `
+                    <div class="fb-wrong-detail">
+                        <span class="fb-icon">❌</span>
+                        <div>
+                            <strong>Incorrect.</strong> You chose: <em>"${questions[i].opts[userAns]}"</em>.<br>
+                            <span class="correct-text-hint">✓ Correct Answer: <strong>"${questions[i].opts[correctAns]}"</strong></span>
+                        </div>
+                    </div>
+                `;
+                fbEl.className = "quiz-feedback-box fb-wrong";
+                fbEl.classList.remove("hidden");
+            }
+        }
+    }
+
+    // 3. Render score summary banner & actions
+    const resultMsg = document.getElementById("quizResultMsg");
+    const totalChs = courses[lang].chapters ? courses[lang].chapters.length : 8;
+    const chDone = (userProgress[lang] && userProgress[lang].completed) ? userProgress[lang].completed.length : 0;
+    const allChaptersDone = chDone >= totalChs;
+
     if (score >= 6) {
-        msg.textContent = `🎉 Congratulations! You passed with ${score}/10! You have unlocked your Certificate!`;
-        msg.className = "quiz-result success";
         triggerConfetti();
 
         if (!userProgress[lang]) {
@@ -1633,30 +1731,67 @@ function submitQuiz() {
         syncProgressToServer();
         updateStatsOverview();
 
-        const totalChs = courses[lang].chapters ? courses[lang].chapters.length : 8;
-        const chDone = (userProgress[lang].completed || []).length;
-        const allChaptersDone = chDone >= totalChs;
-
         if (allChaptersDone) {
-            msg.textContent = `🎉 Congratulations! You scored ${score}/10 and completed all ${totalChs} chapters! Your Certificate is UNLOCKED! 🎓`;
-            msg.className = "quiz-result success";
-            triggerConfetti();
-
-            setTimeout(() => {
-                document.getElementById("certLangSelect").value = lang;
-                showPage("certificatePage");
-            }, 1200);
+            resultMsg.innerHTML = `
+                <div class="quiz-score-header">
+                    <span class="score-badge success">Score: ${score} / 10 (Passed! 🎉)</span>
+                    <h3>🎉 Outstanding! You passed and unlocked your Certificate!</h3>
+                    <p>All ${totalChs} chapters completed and assessment passed. You can review your answers above or view your official certificate below.</p>
+                    <div class="quiz-action-buttons">
+                        <button class="btn primary-btn" onclick="openCertificateFromQuiz('${lang}')">🎓 View My Certificate</button>
+                        <button class="btn secondary-btn" onclick="resetQuizView()">🔄 Retake for 10/10</button>
+                    </div>
+                </div>
+            `;
+            resultMsg.className = "quiz-result-banner success-banner";
         } else {
-            msg.textContent = `✅ Quiz Passed with ${score}/10! To unlock your Certificate, please complete all ${totalChs} chapters (${chDone}/${totalChs} done so far).`;
-            msg.className = "quiz-result success";
-            triggerConfetti();
+            resultMsg.innerHTML = `
+                <div class="quiz-score-header">
+                    <span class="score-badge success">Score: ${score} / 10 (Passed! ✅)</span>
+                    <h3>✅ Assessment Passed! Complete Remaining Chapters</h3>
+                    <p>Great job scoring ${score}/10! You have completed ${chDone}/${totalChs} chapters so far. Finish the remaining chapters to claim your certificate.</p>
+                    <div class="quiz-action-buttons">
+                        <button class="btn primary-btn" onclick="openCourse('${lang}')">📚 Finish Chapters (${chDone}/${totalChs})</button>
+                        <button class="btn secondary-btn" onclick="resetQuizView()">🔄 Retake Quiz</button>
+                    </div>
+                </div>
+            `;
+            resultMsg.className = "quiz-result-banner success-banner";
         }
     } else {
-        msg.textContent = `You scored ${score}/10. A score of 6/10 (60%) is required to pass. Review the lessons and try again!`;
-        msg.className = "quiz-result error";
+        resultMsg.innerHTML = `
+            <div class="quiz-score-header">
+                <span class="score-badge error">Score: ${score} / 10 (Passing mark: 6/10)</span>
+                <h3>⚠️ Not quite passed yet. Review your mistakes above!</h3>
+                <p>You scored ${score} out of 10. The questions highlighted in <strong style="color: #dc2626;">red (✗ Wrong)</strong> above show what you missed and reveal the correct answers. Review them and click Retake below to try again!</p>
+                <div class="quiz-action-buttons">
+                    <button class="btn primary-btn" onclick="resetQuizView()">🔄 Try Again (Retake Quiz)</button>
+                    <button class="btn secondary-btn" onclick="openCourse('${lang}')">📖 Review Course Chapters</button>
+                </div>
+            </div>
+        `;
+        resultMsg.className = "quiz-result-banner error-banner";
+    }
+
+    // Scroll smoothly to results
+    const submitBtn = document.getElementById("quizSubmitBtn");
+    if (submitBtn) {
+        submitBtn.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 }
 
+function resetQuizView() {
+    loadQuiz();
+    const firstQ = document.getElementById("quizQuestionsList");
+    if (firstQ) firstQ.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function openCertificateFromQuiz(lang) {
+    const sel = document.getElementById("certLangSelect");
+    if (sel) sel.value = lang;
+    updateCertificatePreview();
+    showPage("certificatePage");
+}
 // ---------------------------------------------------------
 // 12. CERTIFICATE VIEW
 // ---------------------------------------------------------
