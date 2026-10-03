@@ -86,6 +86,7 @@ def register():
 
     try:
         cursor.execute("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", (name, email, password))
+        cursor.execute("DELETE FROM progress WHERE user_email = ?", (email,))
         conn.commit()
         return jsonify({
             "success": True,
@@ -152,6 +153,12 @@ def save_progress():
     conn = get_db()
     cursor = conn.cursor()
 
+    if not progress:
+        cursor.execute("DELETE FROM progress WHERE user_email = ?", (email,))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True, "message": "All progress cleared."})
+
     import json
     for lang, details in progress.items():
         comp = json.dumps(details.get("completed", []))
@@ -168,6 +175,26 @@ def save_progress():
     conn.commit()
     conn.close()
     return jsonify({"success": True})
+
+
+@app.route("/api/progress/reset", methods=["POST"])
+def reset_progress():
+    data = request.get_json(silent=True) or {}
+    email = data.get("email", "").strip().lower()
+    language = data.get("language")
+
+    if not email:
+        return jsonify({"success": False, "message": "Email required."}), 400
+
+    conn = get_db()
+    cursor = conn.cursor()
+    if language:
+        cursor.execute("DELETE FROM progress WHERE user_email = ? AND language = ?", (email, language))
+    else:
+        cursor.execute("DELETE FROM progress WHERE user_email = ?", (email,))
+    conn.commit()
+    conn.close()
+    return jsonify({"success": True, "message": "Progress reset successfully."})
 
 
 # -----------------------------------------------------------------------------

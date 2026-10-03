@@ -732,12 +732,35 @@ const cheatSheets = {
 };
 
 // ---------------------------------------------------------
-// 4. APPLICATION STATE
+// 4. APPLICATION STATE & USER SESSION STORAGE
 // ---------------------------------------------------------
 let currentUser = JSON.parse(localStorage.getItem("cq_user")) || null;
 let currentLanguage = "python";
 let currentChapterIndex = 0;
-let userProgress = JSON.parse(localStorage.getItem("cq_progress")) || {};
+let userProgress = {};
+
+function getUserProgressKey(email) {
+    const e = (email || (currentUser && currentUser.email) || "").toLowerCase().trim();
+    return e ? "cq_progress_" + e : "cq_progress";
+}
+
+function saveLocalProgress() {
+    localStorage.setItem("cq_progress", JSON.stringify(userProgress));
+    if (currentUser && currentUser.email) {
+        localStorage.setItem(getUserProgressKey(currentUser.email), JSON.stringify(userProgress));
+    }
+}
+
+// Strictly isolate user progress per logged-in user session
+if (currentUser && currentUser.email) {
+    const userKey = getUserProgressKey(currentUser.email);
+    userProgress = JSON.parse(localStorage.getItem(userKey)) || JSON.parse(localStorage.getItem("cq_progress")) || {};
+} else {
+    // When logged out or clean session, wipe any residual state
+    userProgress = {};
+    localStorage.removeItem("cq_progress");
+}
+
 let currentAuthMode = "login";
 let currentCourseFilter = "all";
 
@@ -903,7 +926,10 @@ async function submitAuth() {
 
             if (data.success) {
                 currentUser = data.user;
+                // Brand new user sign up: start completely fresh with 0 progress
+                userProgress = {};
                 localStorage.setItem("cq_user", JSON.stringify(currentUser));
+                saveLocalProgress();
                 msg.textContent = "Account created! Logging you in...";
                 msg.className = "auth-msg success";
                 triggerConfetti();
@@ -914,7 +940,9 @@ async function submitAuth() {
             }
         } catch (e) {
             currentUser = { name, email };
+            userProgress = {};
             localStorage.setItem("cq_user", JSON.stringify(currentUser));
+            saveLocalProgress();
             loginSuccess();
         }
     } else {
@@ -929,10 +957,9 @@ async function submitAuth() {
             if (data.success) {
                 currentUser = data.user;
                 localStorage.setItem("cq_user", JSON.stringify(currentUser));
-                if (data.progress) {
-                    userProgress = data.progress;
-                    localStorage.setItem("cq_progress", JSON.stringify(userProgress));
-                }
+                // Load this user's progress from server (empty object for fresh accounts)
+                userProgress = data.progress || {};
+                saveLocalProgress();
                 msg.textContent = "Login successful!";
                 msg.className = "auth-msg success";
                 setTimeout(loginSuccess, 500);
@@ -942,7 +969,10 @@ async function submitAuth() {
             }
         } catch (e) {
             currentUser = { name: email.split("@")[0], email };
+            const savedProg = localStorage.getItem(getUserProgressKey(email));
+            userProgress = savedProg ? JSON.parse(savedProg) : {};
             localStorage.setItem("cq_user", JSON.stringify(currentUser));
+            saveLocalProgress();
             loginSuccess();
         }
     }
@@ -952,12 +982,20 @@ function loginSuccess() {
     document.getElementById("authPage").classList.add("hidden");
     document.getElementById("mainHeader").classList.remove("hidden");
     updateNavBadge();
+    updateStatsOverview();
+    renderCourseCards();
+    renderHomePage();
     showPage("homePage");
 }
 
 function logout() {
     currentUser = null;
+    userProgress = {};
     localStorage.removeItem("cq_user");
+    localStorage.removeItem("cq_progress");
+    closeResetModal();
+    updateStatsOverview();
+    renderCourseCards();
     document.getElementById("mainHeader").classList.add("hidden");
     showPage("authPage");
     switchAuthTab("login");
@@ -1005,10 +1043,21 @@ function resetCurrentCourseProgress() {
     const cName = courses[lang] ? courses[lang].name : lang;
 
     userProgress[lang] = { completed: [], testPassed: false };
-    localStorage.setItem("cq_progress", JSON.stringify(userProgress));
-    syncProgressToServer();
+    saveLocalProgress();
+
+    if (currentUser && currentUser.email) {
+        fetch("/api/progress/reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: currentUser.email, language: lang })
+        }).catch(e => {
+            syncProgressToServer();
+        });
+    }
+
     updateStatsOverview();
     renderCourseCards();
+    renderHomePage();
 
     closeResetModal();
 
@@ -1028,10 +1077,21 @@ function confirmResetAllProgress() {
     }
 
     userProgress = {};
-    localStorage.setItem("cq_progress", JSON.stringify(userProgress));
-    syncProgressToServer();
+    saveLocalProgress();
+
+    if (currentUser && currentUser.email) {
+        fetch("/api/progress/reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: currentUser.email })
+        }).catch(e => {
+            syncProgressToServer();
+        });
+    }
+
     updateStatsOverview();
     renderCourseCards();
+    renderHomePage();
 
     closeResetModal();
 
@@ -1420,7 +1480,7 @@ function checkChallenge() {
         }
         if (!userProgress[currentLanguage].completed.includes(currentChapterIndex)) {
             userProgress[currentLanguage].completed.push(currentChapterIndex);
-            localStorage.setItem("cq_progress", JSON.stringify(userProgress));
+            saveLocalProgress();
             syncProgressToServer();
             updateStatsOverview();
         }
@@ -1727,7 +1787,7 @@ function submitQuiz() {
         } else {
             userProgress[lang].testPassed = true;
         }
-        localStorage.setItem("cq_progress", JSON.stringify(userProgress));
+        saveLocalProgress();
         syncProgressToServer();
         updateStatsOverview();
 
